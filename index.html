@@ -1,176 +1,1813 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PE Civil Structural Study Map (April 2024 Specs)</title>
-  <style>
-    :root {
-      --bg: #f7f8fb;
-      --card: #ffffff;
-      --ink: #1c2430;
-      --muted: #667085;
-      --line: #d0d5dd;
-      --blue: #175cd3;
-      --blue-soft: #eff4ff;
-      --green: #027a48;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.5;
-    }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 18px 40px; }
-    .hero {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    h1 { margin: 0 0 6px; font-size: 1.7rem; }
-    .sub { margin: 0; color: var(--muted); }
-    .pill {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--blue-soft);
-      color: var(--blue);
-      font-size: 0.84rem;
-      font-weight: 600;
-    }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 14px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 16px;
-    }
-    .card h2 { margin: 0 0 6px; font-size: 1.08rem; }
-    .count { color: var(--blue); font-weight: 600; font-size: 0.9rem; }
-    ul { margin: 10px 0 0 18px; padding: 0; }
-    li { margin: 4px 0; }
-    .full { grid-column: 1 / -1; }
-    .q {
-      border-left: 4px solid var(--green);
-      background: #f6fef9;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-    }
-    .q h3 { margin: 0 0 6px; font-size: 0.98rem; }
-    .q p { margin: 0; color: #344054; }
-    footer { margin-top: 18px; color: var(--muted); font-size: 0.88rem; }
-    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PE Civil: Structural — 60-Day Bootcamp</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --white: #ffffff;
+    --off-white: #f8f8f6;
+    --border: #d8d8d4;
+    --border-light: #ebebea;
+    --text-primary: #1a1a18;
+    --text-secondary: #5a5a55;
+    --text-muted: #9a9a94;
+    --accent-blue: #1a56db;
+    --accent-blue-light: #eef2ff;
+    --status-not-started: #d8d8d4;
+    --status-in-progress: #f59e0b;
+    --status-complete: #16a34a;
+    --status-not-started-bg: #f8f8f6;
+    --status-in-progress-bg: #fffbeb;
+    --status-complete-bg: #f0fdf4;
+    --weak-red: #dc2626;
+    --weak-bg: #fef2f2;
+    --strong-green: #16a34a;
+    --strong-bg: #f0fdf4;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'Lato', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--white);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ---- TOP NAV ---- */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--white);
+    border-bottom: 1.5px solid var(--border);
+    padding: 0 24px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+  }
+  .nav-brand span { color: var(--accent-blue); }
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    background: var(--accent-blue-light);
+    color: var(--accent-blue);
+  }
+  .nav-today-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+  }
+
+  /* ---- LAYOUT ---- */
+  .app-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr 280px;
+    min-height: calc(100vh - 52px);
+  }
+
+  /* ---- LEFT SIDEBAR ---- */
+  .sidebar-left {
+    border-right: 1.5px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+    background: var(--off-white);
+  }
+  .sidebar-section {
+    padding: 0 16px;
+    margin-bottom: 20px;
+  }
+  .sidebar-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+  .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+    text-decoration: none;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav-item:hover, .sidebar-nav-item.active {
+    background: var(--white);
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .sidebar-nav-item .icon {
+    font-size: 14px;
+    width: 18px;
+    text-align: center;
+  }
+  .week-nav {
+    list-style: none;
+  }
+  .week-nav li {
+    font-size: 12px;
+    padding: 5px 10px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .week-nav li:hover { background: var(--white); color: var(--text-secondary); }
+  .week-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--border-light);
+    color: var(--text-muted);
+  }
+  .week-badge.complete { background: var(--status-complete-bg); color: var(--status-complete); }
+
+  /* ---- MAIN CONTENT ---- */
+  .main-content {
+    overflow-y: auto;
+    height: calc(100vh - 52px);
+  }
+
+  /* ---- DASHBOARD ---- */
+  .dashboard-header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .exam-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    max-width: 520px;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .stat-card {
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    background: var(--white);
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* Progress bar */
+  .progress-bar-container {
+    background: var(--border-light);
+    border-radius: 3px;
+    height: 5px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent-blue);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  /* Weak area alert */
+  .weak-area-banner {
+    margin: 16px 32px;
+    border: 1.5px solid #fca5a5;
+    border-left: 4px solid var(--weak-red);
+    background: var(--weak-bg);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .weak-area-banner .alert-icon { font-size: 16px; margin-top: 1px; }
+  .weak-area-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--weak-red);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .weak-area-text { font-size: 12px; color: #7f1d1d; line-height: 1.5; }
+  .weak-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .weak-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    border-radius: 3px;
+    color: var(--weak-red);
+    font-weight: 600;
+  }
+
+  /* ---- SECTION HEADERS ---- */
+  .section-container {
+    padding: 24px 32px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .section-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ---- FILTER BAR ---- */
+  .filter-bar {
+    display: flex;
+    gap: 6px;
+    padding: 0 32px 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .filter-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+  .filter-btn.active {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: white;
+  }
+  .search-input {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    outline: none;
+    color: var(--text-primary);
+    min-width: 160px;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--accent-blue); }
+
+  /* ---- DAY CARDS ---- */
+  .day-list { padding: 0 32px; }
+  .week-group { margin-bottom: 24px; }
+  .week-group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--off-white);
+    border: 1.5px solid var(--border);
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .week-group-header:hover { background: #f0f0ed; }
+  .week-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .week-topic {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .week-progress-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+  .week-chevron {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+  .week-group.collapsed .week-chevron { transform: rotate(-90deg); }
+  .week-days { border: 1.5px solid var(--border); border-top: none; border-radius: 0 0 6px 6px; overflow: hidden; }
+  .week-group.collapsed .week-days { display: none; }
+
+  .day-card {
+    border-bottom: 1px solid var(--border-light);
+    background: var(--white);
+    transition: background 0.15s;
+  }
+  .day-card:last-child { border-bottom: none; }
+  .day-card:hover { background: #fafaf8; }
+
+  .day-card-header {
+    display: grid;
+    grid-template-columns: 42px 1fr auto;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .day-number {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .day-info {}
+  .day-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+  .day-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .day-topic-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.03em;
+  }
+  .tag-seismic { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .tag-foundations { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+  .tag-wood { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+  .tag-masonry { background: #fce7f3; color: #831843; border: 1px solid #f9a8d4; }
+  .tag-steel { background: #dbeafe; color: #1e3a8a; border: 1px solid #93c5fd; }
+  .tag-concrete { background: #dcfce7; color: #14532d; border: 1px solid #86efac; }
+  .tag-analysis { background: #ede9fe; color: #4c1d95; border: 1px solid #c4b5fd; }
+  .tag-loads { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+  .tag-review { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+  .tag-mixed { background: #fdf4ff; color: #581c87; border: 1px solid #e9d5ff; }
+  .tag-exam { background: #1a56db; color: white; border: 1px solid #1a56db; }
+  .tag-retaining { background: #fff7ed; color: #7c2d12; border: 1px solid #fdba74; }
+
+  .day-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .day-chevron {
+    font-size: 11px;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+
+  /* Status indicator — left border on card */
+  .day-card[data-status="not-started"] { border-left: 3px solid var(--status-not-started); }
+  .day-card[data-status="in-progress"] { border-left: 3px solid var(--status-in-progress); }
+  .day-card[data-status="complete"] { border-left: 3px solid var(--status-complete); }
+
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .status-dot.not-started { background: var(--status-not-started); }
+  .status-dot.in-progress { background: var(--status-in-progress); }
+  .status-dot.complete { background: var(--status-complete); }
+
+  /* Expanded day body */
+  .day-card-body {
+    display: none;
+    padding: 0 16px 16px 70px;
+    border-top: 1px solid var(--border-light);
+  }
+  .day-card.expanded .day-card-body { display: block; }
+  .day-card.expanded .day-chevron { transform: rotate(90deg); }
+
+  .day-goal {
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--off-white);
+    border-left: 3px solid var(--accent-blue);
+    padding: 8px 12px;
+    border-radius: 0 4px 4px 0;
+    margin: 12px 0 14px;
+    font-style: italic;
+  }
+
+  .day-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .day-section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .checklist {
+    list-style: none;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 4px 0;
+    line-height: 1.4;
+  }
+  .checklist li input[type="checkbox"] {
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--accent-blue);
+    cursor: pointer;
+  }
+  .checklist li.checked { text-decoration: line-through; color: var(--text-muted); }
+
+  .resource-list {
+    list-style: none;
+  }
+  .resource-item {
+    font-size: 12px;
+    padding: 5px 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .resource-item:last-child { border-bottom: none; }
+  .resource-type {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .rtype-yt { background: #fee2e2; color: #991b1b; }
+  .rtype-web { background: #dbeafe; color: #1e3a8a; }
+  .rtype-drill { background: #ede9fe; color: #4c1d95; }
+  .rtype-practice { background: #dcfce7; color: #14532d; }
+
+  .why-matters {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #1e40af;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .why-matters strong {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .day-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    align-items: center;
+  }
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: all 0.15s;
+    border: 1.5px solid transparent;
+  }
+  .btn-primary { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
+  .btn-primary:hover { background: #1648c4; }
+  .btn-secondary { background: var(--white); color: var(--text-secondary); border-color: var(--border); }
+  .btn-secondary:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+  .btn-danger { background: var(--white); color: var(--weak-red); border-color: #fca5a5; }
+  .btn-complete { background: var(--status-complete-bg); color: var(--status-complete); border-color: #86efac; }
+  .btn-complete:hover { background: #dcfce7; }
+
+  .notes-field {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    color: var(--text-primary);
+    resize: vertical;
+    min-height: 60px;
+    outline: none;
+    margin-top: 10px;
+    transition: border-color 0.15s;
+  }
+  .notes-field:focus { border-color: var(--accent-blue); }
+  .notes-field::placeholder { color: var(--text-muted); }
+
+  /* ---- RIGHT SIDEBAR ---- */
+  .sidebar-right {
+    border-left: 1.5px solid var(--border);
+    padding: 20px;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+    background: var(--white);
+  }
+
+  .widget {
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .widget-header {
+    padding: 10px 14px;
+    background: var(--off-white);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .widget-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .widget-body { padding: 12px 14px; }
+
+  .today-focus {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .today-topic {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .today-tasks { list-style: none; }
+  .today-task {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .today-task:last-child { border-bottom: none; }
+
+  .topic-strength {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 12px;
+  }
+  .topic-strength:last-child { border-bottom: none; }
+  .strength-label { color: var(--text-secondary); }
+  .strength-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .strength-weak { background: var(--weak-bg); color: var(--weak-red); border: 1px solid #fca5a5; }
+  .strength-strong { background: var(--strong-bg); color: var(--strong-green); border: 1px solid #86efac; }
+  .strength-medium { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+
+  .handbook-widget {
+    border: 1.5px dashed var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    background: var(--off-white);
+    text-align: center;
+  }
+  .handbook-icon { font-size: 24px; margin-bottom: 8px; }
+  .handbook-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+  .handbook-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+  .upload-btn {
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 7px;
+    border: 1.5px dashed var(--accent-blue);
+    background: var(--accent-blue-light);
+    color: var(--accent-blue);
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: all 0.15s;
+  }
+  .upload-btn:hover { background: #dbeafe; }
+
+  /* ---- MODULES VIEW ---- */
+  .modules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 24px 32px;
+  }
+  .module-card {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .module-card:hover { border-color: var(--accent-blue); box-shadow: 0 2px 8px rgba(26,86,219,0.08); }
+  .module-card.weak-module { border-left: 4px solid var(--weak-red); }
+  .module-card.strong-module { border-left: 4px solid var(--status-complete); }
+  .module-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .module-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .module-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .module-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .module-subtopics {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .module-subtopic {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 7px;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-secondary);
+  }
+  .module-exam-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light);
+  }
+
+  /* ---- VIEWS ---- */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ---- HANDBOOK VIEW ---- */
+  .handbook-section {
+    padding: 24px 32px;
+  }
+  .handbook-upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    background: var(--off-white);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 24px;
+  }
+  .handbook-upload-area:hover { border-color: var(--accent-blue); background: var(--accent-blue-light); }
+  .handbook-drills {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .drill-card {
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .drill-card:hover { border-color: var(--accent-blue); }
+  .drill-card.locked { opacity: 0.5; cursor: not-allowed; }
+  .drill-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .drill-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+  /* ---- MOCK EXAM ---- */
+  .mock-section { padding: 24px 32px; }
+  .mock-card {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 12px;
+    background: var(--white);
+  }
+  .mock-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .mock-title { font-size: 14px; font-weight: 700; }
+  .mock-meta { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+  .mock-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
+  .mock-stats {
+    display: flex;
+    gap: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+  }
+  .mock-stat { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+  .mock-stat span { color: var(--text-primary); font-weight: 600; }
+
+  /* ---- RESPONSIVE UTIL ---- */
+  .hidden { display: none !important; }
+
+  /* Pinned today marker */
+  .today-marker {
+    background: #eff6ff;
+    border: 1.5px solid var(--accent-blue);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-blue);
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
-      <h1>PE Civil: Structural — Topic Map + Practice Examples</h1>
-      <p class="sub">Updated to match the official <strong>April 2024 NCEES Civil–Structural CBT</strong> specification structure.</p>
-      <span class="pill">80 questions · 9 hours · SI + USCS</span>
-    </section>
 
-    <section class="grid">
-      <article class="card">
-        <h2>1) Analysis of Structures — Loads and Load Applications</h2>
-        <div class="count">12–18 questions</div>
-        <ul>
-          <li>Dead, live, construction, wind, seismic, moving, snow/rain/ice, and impact loads</li>
-          <li>Earth pressure + surcharge loads</li>
-          <li>Tributary areas and load paths (vertical/lateral)</li>
-          <li>Load combinations</li>
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="nav-brand">PE <span>STRUCTURAL</span> / 60-DAY BOOTCAMP</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="showView('dashboard')">Dashboard</a></li>
+    <li><a href="#" onclick="showView('schedule')">Schedule</a></li>
+    <li><a href="#" onclick="showView('modules')">Modules</a></li>
+    <li><a href="#" onclick="showView('handbook')">Handbook</a></li>
+    <li><a href="#" onclick="showView('mock')">Mock Exams</a></li>
+  </ul>
+  <button class="nav-today-btn" onclick="goToToday()">→ TODAY</button>
+</nav>
+
+<div class="app-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar-left">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigate</div>
+      <a href="#" class="sidebar-nav-item active" onclick="showView('dashboard')">
+        <span class="icon">⬛</span> Dashboard
+      </a>
+      <a href="#" class="sidebar-nav-item" onclick="showView('schedule')">
+        <span class="icon">📋</span> Full Schedule
+      </a>
+      <a href="#" class="sidebar-nav-item" onclick="showView('modules')">
+        <span class="icon">📚</span> Topic Modules
+      </a>
+      <a href="#" class="sidebar-nav-item" onclick="showView('handbook')">
+        <span class="icon">📖</span> Handbook Drills
+      </a>
+      <a href="#" class="sidebar-nav-item" onclick="showView('mock')">
+        <span class="icon">📝</span> Mock Exams
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Weeks</div>
+      <ul class="week-nav" id="weekNav"></ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Filter by Topic</div>
+      <a href="#" class="sidebar-nav-item" onclick="filterByTopic('seismic')"><span class="icon">🔴</span> Seismic</a>
+      <a href="#" class="sidebar-nav-item" onclick="filterByTopic('foundations')"><span class="icon">🔴</span> Foundations</a>
+      <a href="#" class="sidebar-nav-item" onclick="filterByTopic('wood')"><span class="icon">🔴</span> Wood/Masonry</a>
+      <a href="#" class="sidebar-nav-item" onclick="filterByTopic('steel')"><span class="icon">🟢</span> Steel</a>
+      <a href="#" class="sidebar-nav-item" onclick="filterByTopic('concrete')"><span class="icon">🟢</span> Concrete</a>
+      <a href="#" class="sidebar-nav-item" onclick="filterByTopic('analysis')"><span class="icon">🟢</span> Analysis</a>
+      <a href="#" class="sidebar-nav-item" onclick="filterByTopic('review')"><span class="icon">⚪</span> Review Days</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="mainContent">
+
+    <!-- DASHBOARD VIEW -->
+    <div class="view active" id="view-dashboard">
+      <div class="dashboard-header">
+        <div class="exam-title">NCEES PE CIVIL: STRUCTURAL DEPTH — 80 QUESTIONS — 8 HRS</div>
+        <h1 class="page-title">60-Day Bootcamp</h1>
+        <p class="page-subtitle">Strict, structured, and purpose-built. You have 60 days. Every day counts. Start with your weak areas, stay sharp on your strong ones.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Days Elapsed</div>
+          <div class="stat-value" id="daysElapsed">0</div>
+          <div class="stat-sub">of 60 days</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="dayProgressBar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Days Completed</div>
+          <div class="stat-value" id="daysComplete">0</div>
+          <div class="stat-sub">marked complete</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="completionBar" style="width:0%;background:var(--status-complete)"></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Current Week</div>
+          <div class="stat-value" id="currentWeek">1</div>
+          <div class="stat-sub" id="currentWeekFocus">Seismic + Foundations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Exam Format</div>
+          <div class="stat-value" style="font-size:16px;margin-top:4px">80 Qs</div>
+          <div class="stat-sub">8 hrs · CBT · Multiple types</div>
+        </div>
+      </div>
+
+      <div class="weak-area-banner">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <div class="weak-area-title">Weak Areas — Front-Loaded and Recurring</div>
+          <div class="weak-area-text">These topics are your primary threat on exam day. They are introduced in Week 1, revisited every week, and dominate the final push. Do not defer them.</div>
+          <div class="weak-tags">
+            <span class="weak-tag">SEISMIC / ASCE 7</span>
+            <span class="weak-tag">FOUNDATIONS</span>
+            <span class="weak-tag">WOOD DESIGN</span>
+            <span class="weak-tag">MASONRY DESIGN</span>
+            <span class="weak-tag">RETAINING WALLS</span>
+            <span class="weak-tag">EARTH PRESSURE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-title">📌 Today's Tasks</div>
+          <div class="section-meta" id="todayDate"></div>
+        </div>
+        <div id="todayWidget" style="border:1.5px solid var(--border);border-radius:6px;padding:16px;background:var(--white);">
+          <div class="today-focus" id="todayFocus">Day 1 — Seismic Fundamentals: ASCE 7 Basics</div>
+          <div class="today-topic" id="todayTopicLabel">Topic: Seismic / ASCE 7 · Est. 1.5 hrs</div>
+          <ul class="today-tasks" id="todayTaskList"></ul>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="btn btn-primary" onclick="goToToday()">Open Day Card</button>
+            <button class="btn btn-secondary">Mark In Progress</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-container" style="padding-top:0">
+        <div class="section-header">
+          <div class="section-title">📊 Exam Topic Coverage Map</div>
+        </div>
+        <div style="border:1.5px solid var(--border);border-radius:6px;overflow:hidden;">
+          <div id="coverageMap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE VIEW -->
+    <div class="view" id="view-schedule">
+      <div class="dashboard-header">
+        <div class="exam-title">60-DAY STUDY PLAN</div>
+        <h1 class="page-title">Full Schedule</h1>
+        <p class="page-subtitle">6 study days + 1 review/test day per week. Weak areas front-loaded. Mixed sets increase after Week 2.</p>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="setFilter('all',this)">All Days</button>
+        <button class="filter-btn" onclick="setFilter('seismic',this)">Seismic</button>
+        <button class="filter-btn" onclick="setFilter('foundations',this)">Foundations</button>
+        <button class="filter-btn" onclick="setFilter('wood',this)">Wood/Masonry</button>
+        <button class="filter-btn" onclick="setFilter('steel',this)">Steel</button>
+        <button class="filter-btn" onclick="setFilter('concrete',this)">Concrete</button>
+        <button class="filter-btn" onclick="setFilter('analysis',this)">Analysis</button>
+        <button class="filter-btn" onclick="setFilter('review',this)">Review Days</button>
+        <input class="search-input" type="text" placeholder="Search days..." oninput="searchDays(this.value)">
+      </div>
+      <div class="day-list" id="dayList"></div>
+    </div>
+
+    <!-- MODULES VIEW -->
+    <div class="view" id="view-modules">
+      <div class="dashboard-header">
+        <div class="exam-title">TOPIC MODULES</div>
+        <h1 class="page-title">Study Modules</h1>
+        <p class="page-subtitle">Each module contains an overview, key subtopics, common mistakes, free resources, and practice strategy. Red border = weak area. Green = strong.</p>
+      </div>
+      <div class="modules-grid" id="modulesGrid"></div>
+    </div>
+
+    <!-- HANDBOOK VIEW -->
+    <div class="view" id="view-handbook">
+      <div class="dashboard-header">
+        <div class="exam-title">REFERENCE TRAINING</div>
+        <h1 class="page-title">Handbook Drills</h1>
+        <p class="page-subtitle">The PE handbook is your only reference. You must know where everything is before exam day. Upload it below, then drill lookup speed.</p>
+      </div>
+      <div class="handbook-section">
+        <div class="handbook-upload-area" onclick="document.getElementById('handbookUpload').click()">
+          <div style="font-size:32px;margin-bottom:10px">📖</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:6px">Upload PE Structural Handbook PDF</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Drop the NCEES PE Structural Engineering Reference Handbook here to activate handbook drills</div>
+          <button class="btn btn-primary" style="pointer-events:none">Select File</button>
+          <input type="file" id="handbookUpload" accept=".pdf" style="display:none" onchange="handleHandbookUpload(this)">
+        </div>
+
+        <div class="section-header">
+          <div class="section-title">🔍 Handbook Drill Modules</div>
+          <div class="section-meta">Unlock after upload · Timed lookup training</div>
+        </div>
+        <div style="background:var(--weak-bg);border:1px solid #fca5a5;border-radius:6px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#7f1d1d;">
+          <strong>Why this matters:</strong> On exam day, you cannot search with Ctrl+F. You get a side panel that opens one chapter at a time. Your ability to find the seismic table, load combo, or bearing capacity equation in under 30 seconds is a real skill that must be trained.
+        </div>
+        <div class="handbook-drills" id="handbookDrills"></div>
+
+        <div class="section-header" style="margin-top:24px">
+          <div class="section-title">📍 Reference Map (Build as You Study)</div>
+        </div>
+        <div id="refMap" style="border:1.5px solid var(--border);border-radius:6px;overflow:hidden;"></div>
+      </div>
+    </div>
+
+    <!-- MOCK EXAM VIEW -->
+    <div class="view" id="view-mock">
+      <div class="dashboard-header">
+        <div class="exam-title">MOCK EXAMS & TIMED DRILLS</div>
+        <h1 class="page-title">Practice Sets</h1>
+        <p class="page-subtitle">Mixed, timed, exam-style. After Week 2, these become your primary practice. Complete every one before exam day.</p>
+      </div>
+      <div class="mock-section" id="mockSection"></div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar-right">
+    <div class="widget">
+      <div class="widget-header"><div class="widget-title">📌 Today's Focus</div></div>
+      <div class="widget-body">
+        <div class="today-focus" id="sidebarFocus">Day 1 — Seismic Basics</div>
+        <div class="today-topic" id="sidebarTopic">Seismic / ASCE 7 · 1.5 hrs</div>
+        <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="goToToday()">Go to Today →</button>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-header"><div class="widget-title">📊 Topic Strength</div></div>
+      <div class="widget-body" id="strengthWidget"></div>
+    </div>
+
+    <div class="handbook-widget">
+      <div class="handbook-icon">📖</div>
+      <div class="handbook-title">Handbook Not Uploaded</div>
+      <div class="handbook-text">Upload your PE Structural Reference Handbook PDF to unlock timed lookup drills and the reference map.</div>
+      <button class="upload-btn" onclick="showView('handbook')">+ Upload Handbook</button>
+    </div>
+
+    <div class="widget">
+      <div class="widget-header"><div class="widget-title">⚡ Quick Links</div></div>
+      <div class="widget-body">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <a href="https://www.youtube.com/results?search_query=ASCE+7+seismic+design+PE+exam" target="_blank" style="font-size:11px;color:var(--accent-blue);text-decoration:none;">▶ ASCE 7 Seismic YouTube Search</a>
+          <a href="https://www.engineeringexampro.com" target="_blank" style="font-size:11px;color:var(--accent-blue);text-decoration:none;">▶ EngineeringExamPro (Free)</a>
+          <a href="https://www.youtube.com/results?search_query=wood+design+NDS+PE+exam" target="_blank" style="font-size:11px;color:var(--accent-blue);text-decoration:none;">▶ NDS Wood Design YouTube</a>
+          <a href="https://www.youtube.com/results?search_query=foundation+bearing+capacity+PE+exam" target="_blank" style="font-size:11px;color:var(--accent-blue);text-decoration:none;">▶ Foundations YouTube Search</a>
+          <a href="https://ncees.org/exams/" target="_blank" style="font-size:11px;color:var(--accent-blue);text-decoration:none;">▶ NCEES Official Exam Page</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+// ============================================================
+// DATA: 60-DAY PLAN
+// ============================================================
+
+const DAYS = [
+  // WEEK 1: Seismic + Foundations (WEAK AREAS — attack immediately)
+  { id:1, week:1, topic:'seismic', title:'Seismic Fundamentals: ASCE 7 Basics', time:'1.5 hrs', goal:'Understand the ASCE 7 seismic design philosophy — SDC, SDS, SD1, site class, occupancy category. Know what these mean and why they appear on the exam.', tasks:['Read ASCE 7 Chapter 11 overview (free summary online)','Watch: Seismic Design Category intro video (YouTube)','List the 6 SDCs and conditions for each','Identify which SDC questions appeared in practice exam (Q9, Q13, Q74, Q76)','Do 5 concept-check problems on SDC classification'], resources:[{type:'yt',label:'Seismic Design Categories — PE Exam Review',url:'https://www.youtube.com/results?search_query=seismic+design+category+PE+exam+ASCE+7'},{type:'web',label:'Engineering Pro Guides — ASCE 7 Seismic',url:'https://www.engineeringproguides.com'},{type:'drill',label:'SDC Classification Drill (5 problems)'}], why:'Q9, Q13, Q74, Q76 from your practice exam all touch seismic or SDC. Seismic appears 8–12 questions on the actual exam. You rated yourself WEAK here. Start now.'},
+
+  { id:2, week:1, topic:'seismic', title:'Seismic: Base Shear, ELF Procedure, Cs', time:'2 hrs', goal:'Calculate Cs, V, and distribute lateral forces using the Equivalent Lateral Force procedure. This is the core seismic calculation on the PE exam.', tasks:['Derive Cs formula from ASCE 7 Table 12.8-2','Calculate V = Cs × W for 3 practice problems','Understand T, Ta, Cu — when to use each','Watch ELF procedure walkthrough video','Solve Q9 from practice exam from scratch'], resources:[{type:'yt',label:'ELF Procedure Step by Step — YouTube',url:'https://www.youtube.com/results?search_query=equivalent+lateral+force+procedure+ASCE+7+PE+exam'},{type:'practice',label:'3 ELF base shear calculations (generate your own with V, Fx distribution)'}], why:'The ELF procedure is the most-tested seismic calculation. Every seismic question on your practice exam traces back to this. You must be able to set up Cs blindfolded.'},
+
+  { id:3, week:1, topic:'foundations', title:'Foundations: Bearing Capacity, Settlement', time:'2 hrs', goal:'Calculate ultimate and allowable bearing capacity for spread footings using Terzaghi/Meyerhof. Understand immediate vs. consolidation settlement.', tasks:['Study bearing capacity equation: qu = cNc + qNq + 0.5γBNγ','Understand when GWT correction applies (it was in Q4)','Review settlement types: immediate, primary consolidation, secondary','Solve Q3 (effective stress), Q4 (bearing in sand), Q41, Q42 from practice exam','Do 3 bearing capacity calculations'], resources:[{type:'yt',label:'Bearing Capacity — PE Civil Review',url:'https://www.youtube.com/results?search_query=bearing+capacity+spread+footing+PE+civil+exam'},{type:'web',label:'Free geotech notes — soil bearing capacity',url:'https://www.geotechdata.info'},{type:'practice',label:'3 footing bearing capacity problems'}], why:'Q3, Q4, Q41, Q42, Q47, Q64, Q66 from your practice exam are foundation/soil questions. That is 8+ out of 80. This is your biggest raw weakness by question count.'},
+
+  { id:4, week:1, topic:'foundations', title:'Foundations: Lateral Earth Pressure, Retaining Walls', time:'2 hrs', goal:'Calculate active/passive earth pressure using Rankine and Coulomb. Solve overturning and sliding for retaining walls. This topic appeared 3 times in your practice exam.', tasks:['Derive Ka = tan²(45 - φ/2) from first principles','Solve Q2 (lateral earth pressure concepts)','Solve Q6 (overturning factor of safety — Rankine)','Solve Q79 (sliding FS) and Q80 (active earth pressure force)','Diagram pressure distributions for cohesive and cohesionless soils'], resources:[{type:'yt',label:'Rankine Earth Pressure — PE Exam',url:'https://www.youtube.com/results?search_query=Rankine+earth+pressure+retaining+wall+PE+exam'},{type:'practice',label:'Q2, Q6, Q79, Q80 from practice exam — full redo'}], why:'Q2, Q6, Q51, Q79, Q80 — 5 direct geotechnical/retaining wall questions. Master the pressure triangle and moment arms cold.'},
+
+  { id:5, week:1, topic:'wood', title:'Wood Design: NDS Fundamentals, Adjustment Factors', time:'1.5 hrs', goal:'Understand NDS adjustment factors (CD, CM, Ct, CF, Ci, Cp). Know which apply to which stress type. Nail down FcE for column buckling.', tasks:['List all NDS adjustment factors and when each applies','Study Q50 (critical buckling FcE for timber column)','Study Q55 (wood stud wall — allowable vertical load)','Practice applying CD × CM × Ct × CF to Fc for a 2×6 column','Identify common wood member types: sawn, glulam, LVL'], resources:[{type:'yt',label:'NDS Adjustment Factors Explained',url:'https://www.youtube.com/results?search_query=NDS+wood+design+adjustment+factors+PE+exam'},{type:'practice',label:'Q50, Q55 from practice exam — work fully'}], why:'Q50 and Q55 are direct NDS problems. Wood is a guaranteed topic block — 4–6 questions. You rated yourself WEAK. The adjustment factor table is where the exam catches people.'},
+
+  { id:6, week:1, topic:'masonry', title:'Masonry Design: TMS 402, Shear Walls, Flexure', time:'1.5 hrs', goal:'Understand allowable stress design for masonry. Calculate shear wall capacity, out-of-plane flexure. Know Q56 type problems cold.', tasks:['Study TMS 402 ASD methodology — key equations','Solve Q56 (masonry beam max allowable shear)','Review diaphragm classifications from Q62 (flexible, rigid, torsionally irregular)','Study masonry shear wall design parameters','List 3 common masonry exam mistakes'], resources:[{type:'yt',label:'Masonry Design PE Exam — TMS 402',url:'https://www.youtube.com/results?search_query=masonry+design+TMS+402+PE+exam'},{type:'practice',label:'Q56, Q62 from practice exam'}], why:'Q56, Q62 test masonry and diaphragm classification directly. Masonry is often 3–5 questions. It requires knowing the code framework, not deep calculation.'},
+
+  { id:7, week:1, topic:'review', title:'WEEK 1 REVIEW + TIMED QUIZ', time:'2 hrs', goal:'Lock in what you learned. Identify gaps. Score yourself honestly. Carry weak spots forward.', tasks:['Re-solve: Q2, Q3, Q4, Q6, Q9, Q50, Q55, Q56, Q79, Q80 — untimed first','Then redo 5 of them timed: 6 min per question max','Write down every formula you had to look up','Flag any topic where you guessed','Plan Week 2: which topics need more time?'], resources:[{type:'drill',label:'10-question mixed set from Week 1 topics'},{type:'practice',label:'Self-score: how many could you solve without looking anything up?'}], why:'You cannot move on without sealing Week 1. These are your weakest areas. A review day now saves you 3 confused days later.'},
+
+  // WEEK 2: Seismic continued + Wood/Masonry deeper + Analysis active
+  { id:8, week:2, topic:'seismic', title:'Seismic: Diaphragms, Irregularities, Load Distribution', time:'2 hrs', goal:'Understand flexible vs. rigid diaphragms, torsional irregularity, and how lateral forces are distributed to shear walls.', tasks:['Study Q62 (diaphragm characteristics — flexible, rigid, torsionally irregular/regular)','Study Q8 (wind load distribution to shear walls)','Compare flexible vs. rigid diaphragm load distribution methods','Review ASCE 7 Table 12.3-1 (horizontal irregularities)','Solve 3 diaphragm distribution problems'], resources:[{type:'yt',label:'Diaphragm Design Flexible vs Rigid',url:'https://www.youtube.com/results?search_query=flexible+rigid+diaphragm+seismic+PE+exam'},{type:'web',label:'AISC/ASCE 7 diaphragm overview notes'}], why:'Q62 is a drag-and-drop AIT type question on diaphragm classification — a format you will see on exam day. Know the criteria for each classification cold.'},
+
+  { id:9, week:2, topic:'seismic', title:'Seismic: Components, Attachments, Fp, Connections', time:'1.5 hrs', goal:'Calculate seismic force on components, attachments, and cladding per ASCE 7-16 §13.', tasks:['Study Q74 (horizontal design strength for grade beam to pier connection)','Study Q76 (seismic force at connection — low roof to main structure)','Derive Fp formula from ASCE 7 §13.3.1','Practice 3 component force calculations with SDS and component properties'], resources:[{type:'yt',label:'ASCE 7 Seismic Component Forces Fp',url:'https://www.youtube.com/results?search_query=ASCE+7+seismic+component+force+Fp+PE+exam'},{type:'practice',label:'Q74, Q76 full solutions'}], why:'Q74 and Q76 are direct Fp application problems. Component seismic design shows up every exam — it is a reliable 1–2 question block.'},
+
+  { id:10, week:2, topic:'wood', title:'Wood Design: Connections, Lag Screws, Diaphragms', time:'2 hrs', goal:'Design wood connections: lag screws in withdrawal, wood screws, nails. Understand wood diaphragm behavior.', tasks:['Study Q60 (lag screw tensile force — moment equilibrium problem)','Calculate withdrawal resistance for lag screws per NDS','Study wood diaphragm design — drag struts, chords, sub-diaphragms','Solve 2 wood connection problems'], resources:[{type:'yt',label:'Wood Connections NDS PE Exam',url:'https://www.youtube.com/results?search_query=wood+connections+lag+screw+NDS+PE+exam'},{type:'practice',label:'Q60 — full solution with moment equilibrium'}], why:'Q60 is a classic moment equilibrium + connection problem. Wood connections are tested every exam. The lag screw withdrawal problem type repeats.'},
+
+  { id:11, week:2, topic:'analysis', title:'Structural Analysis: Influence Lines, Moving Loads', time:'2 hrs', goal:'Master influence lines for simply supported beams. Solve moving load problems to find max moment.', tasks:['Solve Q10 (max moment from moving load — fill in the blank)','Solve Q73 (moving load set — CG method for max moment)','Draw influence lines for M and V at critical sections','Practice Müller-Breslau principle for qualitative ILs','Solve 3 moving load max moment problems'], resources:[{type:'yt',label:'Influence Lines Moving Loads PE Exam',url:'https://www.youtube.com/results?search_query=influence+lines+moving+loads+PE+civil+structural'},{type:'practice',label:'Q10, Q73 — full solutions'}], why:'Q10 and Q73 are fill-in-the-blank (AIT) moving load problems. These require exact numerical answers — no guessing. Moving loads appear every exam.'},
+
+  { id:12, week:2, topic:'analysis', title:'Structural Analysis: Indeterminate Structures, Moment Distribution', time:'2 hrs', goal:'Set up and apply moment distribution method. Understand carry-over, distribution factors, and fixed-end moments.', tasks:['Solve Q21 (unbalanced FEM at Joint B — moment distribution)','Calculate DF and COF for a 3-span continuous beam','Practice moment distribution for 2-span continuous beam with UDL','Understand when to use 3-moment equation vs moment distribution'], resources:[{type:'yt',label:'Moment Distribution Method Step by Step',url:'https://www.youtube.com/results?search_query=moment+distribution+method+PE+exam+structural'},{type:'practice',label:'Q21 full solution — moment distribution setup'}], why:'Q21 is a direct moment distribution problem. Indeterminate analysis is a consistent exam topic — 2–4 questions typical.'},
+
+  { id:13, week:2, topic:'analysis', title:'Structural Analysis: Trusses, Cables, Composite Sections', time:'1.5 hrs', goal:'Solve truss member forces by method of sections. Analyze cable tension. Calculate composite section properties.', tasks:['Solve Q16 (truss — zero force members b and c)','Solve Q28 (cable tension between C and D)','Solve Q30 (truss Member AB — method of sections)','Review zero force member rules','Practice method of sections on a Pratt truss'], resources:[{type:'yt',label:'Method of Sections Truss PE Exam',url:'https://www.youtube.com/results?search_query=method+of+sections+truss+PE+civil+exam'},{type:'practice',label:'Q16, Q28, Q30 full solutions'}], why:'Q16, Q28, Q30 all appear in your practice exam. Truss analysis is foundational — you should solve these in under 6 minutes each.'},
+
+  { id:14, week:2, topic:'review', title:'WEEK 2 REVIEW + TIMED MIXED SET', time:'2 hrs', goal:'20-question mixed timed set. Seismic, foundations, wood, analysis. 6 min per question. Track every miss.', tasks:['20 problems from Weeks 1–2 topics — set a timer','Record: correct / incorrect / guessed','Review every missed problem — write out full solution','Update weak-area list — what is still broken?','Add difficult formulas to a personal cheat-sheet (for practice only)'], resources:[{type:'drill',label:'20-question timed set — 2 hrs max'},{type:'practice',label:'Q9, Q50, Q60, Q73, Q21, Q30, Q6, Q79 — blind redo'}], why:'Two weeks in. If you still cannot set up ELF base shear or Ka without looking it up, that is the signal to repeat. Do not advance until these are locked.'},
+
+  // WEEK 3: Steel Design + Concrete Design (Strong areas — keep sharp, add depth)
+  { id:15, week:3, topic:'steel', title:'Steel Design: Flexure, LTB, AISC Chapter F', time:'2 hrs', goal:'Calculate design flexural strength. Determine Lp, Lr, and whether LTB controls. Apply AISC Table 3-2 and Chapter F.', tasks:['Solve Q58 (W10×22 — ASD and LRFD flexural strength with Cb=1.0)','Identify compact vs. non-compact vs. slender sections','Calculate Lp and Lr for a W14 section','Practice 3 beam flexure problems from AISC examples','Practice finding sections in AISC tables quickly'], resources:[{type:'yt',label:'AISC Chapter F Flexure LTB PE Exam',url:'https://www.youtube.com/results?search_query=AISC+chapter+F+lateral+torsional+buckling+PE+exam'},{type:'web',label:'AISC Steel Construction Manual — free educational resources',url:'https://www.aisc.org/education'}], why:'Q58 is a direct AISC flexure problem with dual ASD/LRFD answers. Flexure is the highest-volume steel topic. Know Lp and Lr. Know how to use Table 3-2.'},
+
+  { id:16, week:3, topic:'steel', title:'Steel Design: Shear, Deflection, Connections', time:'2 hrs', goal:'Calculate steel beam shear capacity (AISC Chapter G). Apply deflection criteria. Solve weld shear flow problems.', tasks:['Solve Q59 (weld shear flow — unit shear force in welds)','Solve Q29 (deflection criteria — which W sections meet ℓ/240)','Solve Q72 (resistance/safety factors for limit states)','Review φ = 0.9, Ω = 1.67 and when they apply vs. 0.75/2.0','Practice 2 weld shear flow problems'], resources:[{type:'yt',label:'Steel Beam Deflection and Shear Flow PE Exam',url:'https://www.youtube.com/results?search_query=steel+beam+deflection+weld+shear+flow+PE+exam'},{type:'practice',label:'Q29, Q59, Q72 full solutions'}], why:'Q59 (weld shear flow) is a fill-in-the-blank. Q29 (deflection) is a select-4 AIT. Both test steel fluency. Know VQ/I cold.'},
+
+  { id:17, week:3, topic:'steel', title:'Steel Design: Columns, Buckling, Connections (Bolts)', time:'2 hrs', goal:'Calculate column buckling capacity. Solve bolt shear / bearing problems in ASD and LRFD.', tasks:['Solve Q53 (HSS column — buckling direction control)','Solve Q65 (A307 bolt double shear — ASD and LRFD)','Solve Q75 (bolt edge distance and spacing requirements)','Review effective length factor K for braced/unbraced frames','Practice 2 column design problems'], resources:[{type:'yt',label:'Steel Column Buckling AISC PE Exam',url:'https://www.youtube.com/results?search_query=steel+column+buckling+effective+length+PE+exam'},{type:'practice',label:'Q53, Q65, Q75 full solutions'}], why:'Q53, Q65, Q75 all appear in practice exam. Columns and connections together represent a significant steel question block. Know bolt shear in single vs. double shear.'},
+
+  { id:18, week:3, topic:'concrete', title:'Concrete Design: Flexure, Shear, ACI 318', time:'2 hrs', goal:'Design and check RC beams for flexure (As, φMn) and shear (Vc + Vs). Understand overreinforced vs. underreinforced.', tasks:['Solve Q54 (overreinforced beam failure — crushing, sudden)','Solve Q57 (ACI moment coefficients — continuous slab)','Solve Q63 (punching shear on spread footing — ACI 318)','Derive φMn for a singly reinforced beam from scratch','Practice ACI one-way slab design problem'], resources:[{type:'yt',label:'ACI 318 Concrete Beam Design PE Exam',url:'https://www.youtube.com/results?search_query=ACI+318+reinforced+concrete+beam+design+PE+exam'},{type:'practice',label:'Q54, Q57, Q63 full solutions'}], why:'Q54, Q57, Q63 all require ACI 318 knowledge. Concrete flexure and shear are strong for you — use this day to confirm competency and add exam speed.'},
+
+  { id:19, week:3, topic:'concrete', title:'Concrete Design: Columns, Prestressed, Torsion', time:'2 hrs', goal:'Solve prestressed beam top fiber stress at release. Calculate torsion demand. Understand concrete column interaction diagrams.', tasks:['Solve Q23 (torsion in L-beam from double-tee reaction)','Solve Q67 (prestressed beam — top fiber stress at release)','Solve Q49 (prestressing strand pattern for uniform load)','Review P-M interaction diagram concept for RC columns','Practice prestress problem: P/A + Pe/S - M/S'], resources:[{type:'yt',label:'Prestressed Concrete PE Exam Review',url:'https://www.youtube.com/results?search_query=prestressed+concrete+PE+exam+fiber+stress'},{type:'practice',label:'Q23, Q49, Q67 full solutions'}], why:'Q23, Q49, Q67 all relate to prestress and torsion. Prestressed concrete is its own subtopic — 1–3 questions typical. The fiber stress equation must be automatic.'},
+
+  { id:20, week:3, topic:'loads', title:'Loads: Snow, Wind, ASCE 7 Load Combinations', time:'1.5 hrs', goal:'Calculate roof snow load (ASCE 7 Chapter 7). Calculate wind velocity pressure. Apply load combinations correctly.', tasks:['Solve Q7 (roof snow load — exposure, slope, thermal factors)','Solve Q14 (wind velocity pressure qh — fill in blank)','Solve Q5 (load combination for max uplift on footing)','Derive LRFD load combos: 1.2D+1.6L, 0.9D+1.0W, etc.','Practice applying ASCE 7 snow and wind to a sample structure'], resources:[{type:'yt',label:'ASCE 7 Snow Load Wind Load PE Exam',url:'https://www.youtube.com/results?search_query=ASCE+7+snow+load+wind+load+PE+exam+calculations'},{type:'practice',label:'Q5, Q7, Q14 full solutions'}], why:'Q5, Q7, Q14 are load generation questions. Load combinations appear throughout the exam in every material type. You must know which combo governs for each condition.'},
+
+  { id:21, week:3, topic:'review', title:'WEEK 3 REVIEW + 20-QUESTION TIMED SET', time:'2 hrs', goal:'Steel + concrete + loads review. 20 problems in 2 hours. No partial credit on exam day.', tasks:['20 problems from Weeks 1–3 topics — full timed session','Track: time per problem, correct, incorrect, guessed','Flag any question over 8 minutes — that is a problem','Review missed items fully — not just the answer, the method','Write the 5 equations you are most likely to forget'], resources:[{type:'drill',label:'20-question timed mixed set — Weeks 1–3'},{type:'practice',label:'Q7, Q14, Q58, Q63, Q67 — blind redo timed'}], why:'Three weeks in. You should be scoring 70%+ on known topics. If not, identify exactly which sub-topics are failing and assign specific remediation before Week 4.'},
+
+  // WEEK 4: Deeper dives, mixed practice intensifies
+  { id:22, week:4, topic:'foundations', title:'Foundations: Pile Design, Deep Foundations', time:'2 hrs', goal:'Understand pile design — skin friction, tip bearing, group effects. Know IBC pile requirements.', tasks:['Solve Q64 (concrete caisson — diameter for uplift + gravity)','Solve Q70 (IBC pile factor of safety against uplift)','Solve Q71 (precast pile minimum f\'c before driving)','Review skin friction formula: Qs = f × As','Review drilled shaft vs. driven pile design considerations'], resources:[{type:'yt',label:'Pile Foundation Design PE Exam',url:'https://www.youtube.com/results?search_query=pile+foundation+design+PE+civil+structural+exam'},{type:'practice',label:'Q64, Q70, Q71 full solutions'}], why:'Q64, Q70, Q71 are all deep foundation problems in your practice exam. Piles appear consistently on the PE — IBC code requirements are frequently tested.'},
+
+  { id:23, week:4, topic:'seismic', title:'Seismic: SDC D and Above, Special Requirements', time:'2 hrs', goal:'Understand what triggers SDC D requirements, special moment frames, redundancy factor, overstrength factor.', tasks:['Study ASCE 7 Table 11.6-1 and 11.6-2 (SDC determination)','Understand ρ (redundancy factor) — when = 1.0 vs 1.3','Understand Ω₀ (overstrength factor) — when applied','Review seismic detailing requirements for SDC D','Solve 3 SDC D threshold problems'], resources:[{type:'yt',label:'Seismic Design Category D Requirements ASCE 7',url:'https://www.youtube.com/results?search_query=seismic+design+category+D+ASCE+7+special+requirements'},{type:'web',label:'EERI or SEAOC free seismic design guides'}], why:'The PE exam specifically requires at least 2 SDC D seismic scenarios. This is a tested requirement from the exam specs. Do not skip it.'},
+
+  { id:24, week:4, topic:'analysis', title:'Structural Analysis: Deflections, Virtual Work, Energy Methods', time:'2 hrs', goal:'Calculate beam deflections using superposition and formula tables. Solve Q31 and Q32 type problems.', tasks:['Solve Q31 (W8×28 overhanging beam — load for zero deflection at free end)','Solve Q32 (W12×53 beam — max deflection)','Solve Q33 (thermal axial stress — temperature expansion)','Practice superposition for 2-span deflection','Review conjugate beam method concept'], resources:[{type:'yt',label:'Beam Deflection Superposition PE Exam',url:'https://www.youtube.com/results?search_query=beam+deflection+superposition+PE+structural+exam'},{type:'practice',label:'Q31, Q32, Q33 full solutions — Q31 is fill-in-the-blank'}], why:'Q31 (fill-in-blank), Q32, Q33 all require deflection calculation. These are guaranteed exam questions. Superposition and formula use are the required skills.'},
+
+  { id:25, week:4, topic:'steel', title:'Steel: Tension Members, Combined Loading, Plate Girders', time:'1.5 hrs', goal:'Calculate tension member design — yield on gross section, rupture on net section. Solve combined axial + bending.', tasks:['Solve Q27 (pipe with combined axial + bending — max compressive stress)','Review AISC Chapter D tension member design','Review AISC Chapter H — combined axial + flexure (interaction equation)','Solve 2 tension member design problems','Identify shear lag effects and U factor application'], resources:[{type:'yt',label:'Steel Tension Member Design AISC PE Exam',url:'https://www.youtube.com/results?search_query=steel+tension+member+design+AISC+PE+exam'},{type:'practice',label:'Q27 full solution'}], why:'Q27 tests combined axial + bending — a common trap. You must identify which face has max compression before applying combined stress.'},
+
+  { id:26, week:4, topic:'concrete', title:'Concrete: Anchorage to Concrete, ACI 318 Chapter 17', time:'2 hrs', goal:'Calculate anchor bolt / rebar anchor strength. Apply φ factors for concrete breakout and pullout.', tasks:['Solve Q77 (expansion anchor φ for medium reliability)','Solve Q78 (rebar anchor nominal strength limit — fill in blank)','Review ACI 318 Chapter 17 — anchor strength hierarchy','Understand concrete breakout vs. pullout vs. anchor yield','Practice 2 anchor strength problems'], resources:[{type:'yt',label:'ACI 318 Anchor Bolt Design PE Exam',url:'https://www.youtube.com/results?search_query=ACI+318+chapter+17+anchor+bolt+design+PE+exam'},{type:'practice',label:'Q77, Q78 full solutions'}], why:'Q77 and Q78 are direct ACI Chapter 17 problems. Anchorage is a high-value topic that many candidates underprep. The φ factor table is frequently tested.'},
+
+  { id:27, week:4, topic:'mixed', title:'Mixed Practice: Cross-Topic Problem Set', time:'2 hrs', goal:'First full cross-topic mixed drill. 15 problems from all topics studied. Focus on exam pace.', tasks:['15 problems from weeks 1–4 — mixed topics','Time yourself: target 6 min per problem','No looking anything up until after the session','Score and identify topic-level accuracy','Flag "revisit" items for the week 5 opener'], resources:[{type:'drill',label:'15-question cross-topic set — 90 min target'},{type:'practice',label:'Prioritize problems with figures (most exam questions have figures)'}], why:'The PE exam does not sort questions by topic. You will jump from seismic to concrete to steel to foundations. This drill trains that mental agility.'},
+
+  { id:28, week:4, topic:'review', title:'WEEK 4 REVIEW + CHECKPOINT EXAM', time:'2 hrs', goal:'40-question checkpoint exam across all topics so far. This is your 4-week diagnostic. Be honest.', tasks:['40-question set from ALL topics covered (weeks 1–4)','Set a strict 4-hour clock (simulate exam pace)','No stopping, no looking up during the session','Score by topic area after','Identify your bottom 2 performing topics — those get week 5 priority'], resources:[{type:'drill',label:'40-question checkpoint exam — 4 hrs'},{type:'practice',label:'Use all practice exam problems from Q1–Q80 as source material'}], why:'At the 4-week mark you need a diagnostic. The exam is 80 questions in 8 hours. You just did half that. Where are you weak? That answer shapes the rest of your plan.'},
+
+  // WEEK 5: Targeted weak area repair + new topics
+  { id:29, week:5, topic:'foundations', title:'Foundations: Settlement, Soil Classification, SPT', time:'1.5 hrs', goal:'Calculate consolidation settlement. Apply USCS soil classification. Understand SPT N-values and their use.', tasks:['Solve Q41 (long-term settlement comparison)','Solve Q42 (USCS classification criteria)','Solve Q43 (SPT — what it measures)','Solve Q47 (dry unit weight from lab data)','Review primary consolidation: Sc = Cc/(1+e₀) × H × log(σ′f/σ′₀)'], resources:[{type:'yt',label:'Consolidation Settlement PE Exam',url:'https://www.youtube.com/results?search_query=consolidation+settlement+calculation+PE+civil+exam'},{type:'practice',label:'Q41, Q42, Q43, Q47 full solutions'}], why:'Q41–Q43, Q47 are all geotech/soil classification. These are concept-heavy, not calculation-heavy — fast points if you know the material.'},
+
+  { id:30, week:5, topic:'loads', title:'Loads: Moving Loads, Bridge Loads, AASHTO', time:'2 hrs', goal:'Apply AASHTO LRFD concepts for bridge deck design. Calculate effective span for deck slabs.', tasks:['Solve Q1 (unit conversion — kN to tons for hydraulic ram)','Solve Q68 (AASHTO effective span length for deck slab)','Solve Q40 (crane load chart — max radius for 21-ton pick)','Review AASHTO live load lane loading and truck loading basics','Practice 2 bridge load problems'], resources:[{type:'yt',label:'AASHTO LRFD Bridge Load PE Exam',url:'https://www.youtube.com/results?search_query=AASHTO+LRFD+bridge+design+PE+exam'},{type:'practice',label:'Q1, Q40, Q68 full solutions'}], why:'Q1, Q40, Q68 are all bridge/equipment-related. AASHTO appears in PE Civil: Structural. Your bridge background at Caltrans is an asset here — activate it.'},
+
+  { id:31, week:5, topic:'analysis', title:'Structural Analysis: Frames, Shear/Moment Diagrams', time:'2 hrs', goal:'Draw accurate shear and moment diagrams for beams with overhangs, internal hinges, and concentrated moments. Solve Q24 type problems.', tasks:['Solve Q20 (location of max moment from right end)','Solve Q24 (select correct shear and moment diagrams — AIT drag-drop)','Solve Q25 (max flexural stress in rectangular section)','Solve Q15 (diagonal brace axial force from wind)','Practice 3 SFD/BMD problems from scratch'], resources:[{type:'yt',label:'Shear and Moment Diagrams Structural PE',url:'https://www.youtube.com/results?search_query=shear+moment+diagrams+PE+structural+exam'},{type:'practice',label:'Q15, Q20, Q24, Q25 full solutions'}], why:'Q24 is a drag-and-drop AIT — you select the correct SFD and BMD from options. This type requires visual recognition of diagram shapes, not just calculation.'},
+
+  { id:32, week:5, topic:'seismic', title:'Seismic: Soil/Foundation Interaction, Site Class Effects', time:'1.5 hrs', goal:'Understand how site class modifies spectral acceleration. Calculate SDS and SD1 from Ss and S1. Solve Q13 type problems.', tasks:['Solve Q13 (design spectral response acceleration at short period — Site Class D)','Review ASCE 7 Tables 11.4-1 and 11.4-2 (Fa, Fv values)','Calculate SMS = Fa × Ss, SDS = 2/3 × SMS','Practice 3 spectral acceleration problems for different site classes','Note: this directly tests your IBC 2018 + ASCE 7 integration'], resources:[{type:'yt',label:'Site Class Spectral Acceleration ASCE 7',url:'https://www.youtube.com/results?search_query=site+class+spectral+acceleration+ASCE+7+PE+exam'},{type:'practice',label:'Q13 full solution — IBC 2018 + ASCE 7'}], why:'Q13 is a direct spectral acceleration calculation. You must know the Fa/Fv table lookup and the 2/3 factor application.'},
+
+  { id:33, week:5, topic:'concrete', title:'Concrete: Composite Design, Two-Way Slabs', time:'1.5 hrs', goal:'Solve composite beam (wood + steel) transformed section. Review two-way slab punching shear requirements.', tasks:['Solve Q22 (composite wood-steel beam — tensile stress in steel)','Solve Q26 (horizontal shear stress using VQ/I)','Review two-way slab design: flat plate vs. flat slab vs. waffle','Practice transformed section for steel + concrete composite beam','Review ACI one-way vs two-way slab thresholds'], resources:[{type:'yt',label:'Composite Beam Transformed Section PE Exam',url:'https://www.youtube.com/results?search_query=composite+beam+transformed+section+PE+structural'},{type:'practice',label:'Q22, Q26 full solutions'}], why:'Q22 and Q26 directly test composite and VQ/I shear flow. Both are calculation-intensive. VQ/I appears every exam.'},
+
+  { id:34, week:5, topic:'mixed', title:'Mixed Practice: 20-Question Timed Set', time:'2 hrs', goal:'20-question timed mixed set with emphasis on weak areas. Benchmark your Week 5 status.', tasks:['20 problems — weight toward seismic, foundations, wood, masonry','Set 6-minute-per-question target','After: categorize each miss by root cause (formula?, method?, code value?)','Remediate top 3 root causes immediately','Record your running accuracy by topic'], resources:[{type:'drill',label:'20 mixed problems — 2 hrs total'},{type:'practice',label:'Include at least 3 fill-in-the-blank type problems'}], why:'You are 5 weeks in. Your weak areas must be improving. If seismic is still broken, the remaining 25 days must be heavily seismic-weighted.'},
+
+  { id:35, week:5, topic:'review', title:'WEEK 5 REVIEW + TOPIC ACCURACY REPORT', time:'1.5 hrs', goal:'Generate a personal accuracy report by topic. Set week 6 priority based on data, not feelings.', tasks:['Tally all problems solved since week 1 by topic','Calculate % correct per topic area','Rank topics by accuracy (lowest = most time week 6)','Re-solve your 5 worst recent misses','Write one paragraph on what you still do not understand about seismic'], resources:[{type:'drill',label:'Personal accuracy tracking sheet'},{type:'practice',label:'5 worst recent misses — full redo from scratch'}], why:'Data-driven study beats intuition. If you think you know seismic but you are 50% on seismic problems, your feelings are wrong. Follow the data.'},
+
+  // WEEK 6: Construction/temp structures + materials + mixed
+  { id:36, week:6, topic:'loads', title:'Construction: Formwork, Shoring, Temp Structures', time:'2 hrs', goal:'Solve formwork and shoring load problems. Understand OSHA soil classification and excavation requirements.', tasks:['Solve Q15 (diagonal brace — form wall wind load)','Solve Q34 (OSHA Type B soil excavation — minimum horizontal distance)','Solve Q35 (shore load during concrete placement)','Solve Q38 (horizontal force to produce 15-kip brace compression)','Review ACI 347 formwork pressure basics'], resources:[{type:'yt',label:'Formwork Shoring Design PE Exam',url:'https://www.youtube.com/results?search_query=formwork+shoring+PE+civil+structural+exam'},{type:'practice',label:'Q15, Q34, Q35, Q38 full solutions'}], why:'Q15, Q34, Q35, Q38 are all temporary structure/construction problems. The PE Civil: Structural exam includes construction administration topics — often overlooked by candidates.'},
+
+  { id:37, week:6, topic:'loads', title:'Construction: Crane Operations, Load Charts, Quality Assurance', time:'1.5 hrs', goal:'Read crane load charts. Understand IBC inspection requirements for high-strength bolts and special inspection.', tasks:['Solve Q36 (purpose of submittal requirement for temporary structure)','Solve Q37 (IBC quality assurance for A325N bolts)','Solve Q39 (stage beam deflection check for 500 people)','Review AISC bolt inspection requirements','Review IBC Chapter 17 Special Inspection concepts'], resources:[{type:'yt',label:'Construction Admin PE Exam Review',url:'https://www.youtube.com/results?search_query=construction+administration+inspection+PE+civil+structural'},{type:'practice',label:'Q36, Q37, Q39 full solutions'}], why:'Q36, Q37, Q39 test construction administration — a topic category that appears consistently. These are often fast points if you know the basic IBC/AISC requirements.'},
+
+  { id:38, week:6, topic:'concrete', title:'Concrete: Materials, Mix Design, Quality Control', time:'1.5 hrs', goal:'Understand concrete mix design requirements, f\'c acceptance criteria, air content, and concrete cylinder testing.', tasks:['Solve Q44 (concrete mix for nighttime rapid-strength work)','Solve Q46 (average 28-day compressive strength from cylinders)','Solve Q48 (minimum air content for freeze-thaw exposure)','Solve Q52 (ACI acceptance criteria — is concrete satisfactory?)','Review ACI 318 acceptance criteria: avg of 3 ≥ f\'c, no single < f\'c - 500 psi'], resources:[{type:'yt',label:'Concrete Mix Design Quality Control PE Exam',url:'https://www.youtube.com/results?search_query=concrete+mix+design+ACI+quality+control+PE+exam'},{type:'practice',label:'Q44, Q46, Q48, Q52 full solutions'}], why:'Q44, Q46, Q48, Q52 are all materials/QC problems. These are fast points — they require knowing code thresholds, not complex calculations.'},
+
+  { id:39, week:6, topic:'steel', title:'Steel: Cold-Formed, Composite Floor Systems', time:'1.5 hrs', goal:'Review cold-formed steel design (AISI S100). Understand composite steel-concrete floor systems.', tasks:['Review cold-formed steel design basics — AISI S100','Understand composite deck + steel beam design concept','Review Q19 (cross-section flexural rigidity comparison)','Review Q17 (longer beam — bending stress factor)','Solve 2 cold-formed steel concept problems'], resources:[{type:'yt',label:'Cold Formed Steel Design PE Exam',url:'https://www.youtube.com/results?search_query=cold+formed+steel+design+AISI+PE+exam'},{type:'web',label:'AISI free cold-formed steel design resources',url:'https://www.steel.org'}], why:'Q17 and Q19 test fundamental section behavior and stress scaling. Cold-formed steel appears as 2–4 questions on the exam.'},
+
+  { id:40, week:6, topic:'masonry', title:'Masonry: Deep Dive — Walls, Diaphragm Connections', time:'2 hrs', goal:'Solve masonry shear wall, anchorage of walls, and attachment problems. Review out-of-plane slender wall design.', tasks:['Solve Q8 (wind load to shear walls — rigid diaphragm distribution)','Solve Q51 (ASCE 7-16 design lateral soil load for non-rigid walls)','Review TMS 402 Chapters 8 and 9 (shear, flexure)','Study wall anchorage to diaphragm requirements','Practice 2 masonry shear wall problems'], resources:[{type:'yt',label:'Masonry Shear Wall Design TMS 402 PE',url:'https://www.youtube.com/results?search_query=masonry+shear+wall+TMS+402+PE+structural'},{type:'practice',label:'Q8, Q51 full solutions'}], why:'Q8 and Q51 both appear in your practice exam. Masonry wall anchorage to diaphragm is a consistent exam topic — directly tied to seismic load path.'},
+
+  { id:41, week:6, topic:'mixed', title:'Mixed Practice: 25-Question Timed Set', time:'2 hrs', goal:'25-question full mixed drill across all topics. Start pushing toward exam pace.', tasks:['25 problems — fully mixed — 2-hour limit','Keep a running problem log: Q# / topic / correct? / time','Identify any topic where time is dragging beyond 6 min/Q','Review all misses after','Start building a personal "high-yield equation sheet" from memory (not for exam — for training)'], resources:[{type:'drill',label:'25-question mixed timed set — 2 hrs'},{type:'practice',label:'Include AIT-style problems: fill-in-blank, select-4, drag-drop concept'}], why:'The exam is 80 questions in 8 hours. 6 minutes per question is the pace. If you cannot hit that on 25 questions by week 6, the last 2 weeks must be pure sprint training.'},
+
+  { id:42, week:6, topic:'review', title:'WEEK 6 REVIEW + MID-POINT MOCK EXAM', time:'3 hrs', goal:'60-question simulated exam. All topics. 6-hour clock. This is your most important checkpoint before the final push.', tasks:['60 questions — set a 6-hour timer — simulate exam conditions','Work at real exam pace — do not stop to look anything up','After: score by topic area','Identify your 3 lowest performing topic areas','Map those gaps to specific days in weeks 7–8'], resources:[{type:'drill',label:'60-question simulated exam — 6 hrs'},{type:'practice',label:'Use all 80 practice exam questions as source — shuffle, use all'}], why:'At the halfway mark, this mock exam tells you exactly where you stand. Be honest. Do not interpret the results charitably. Fix what is broken while you still have time.'},
+
+  // WEEK 7: Exam speed + recall focus + targeted repair
+  { id:43, week:7, topic:'mixed', title:'Recall Sprint: Seismic Equations from Memory', time:'1.5 hrs', goal:'Write out all seismic equations from memory without any reference. Time yourself. Repeat until clean.', tasks:['Write Cs formula, V, Fx distribution, T from memory','Write SDS = 2/3 × Fa × Ss from memory','Write Fp for component force from memory','Check your recall against notes — mark every error','Repeat until all equations are produced correctly in under 5 min total'], resources:[{type:'drill',label:'Timed recall drill — seismic equations'},{type:'practice',label:'3 seismic problems from scratch — no reference'}], why:'If you reach for the handbook for Cs during the exam, you will spend 4 minutes finding it. If you recall it, you spend 0. Recall speed is a score multiplier.'},
+
+  { id:44, week:7, topic:'mixed', title:'Recall Sprint: Foundation + Retaining Wall Equations', time:'1.5 hrs', goal:'Reproduce Ka, bearing capacity, consolidation settlement, and sliding FS equations from memory.', tasks:['Write Ka = tan²(45 - φ/2) and bearing capacity equation from memory','Write consolidation settlement equation from memory','Write FS against sliding and overturning formulas','Solve 1 retaining wall problem from memory — no reference','Check against notes — mark errors'], resources:[{type:'drill',label:'Timed recall drill — geotechnical equations'},{type:'practice',label:'1 retaining wall + 1 bearing capacity problem blind'}], why:'Retaining walls and foundations were your top weakness. By week 7, these equations must be automatic. If they are not, repeat this drill tomorrow.'},
+
+  { id:45, week:7, topic:'mixed', title:'Recall Sprint: Wood + Masonry Equations', time:'1.5 hrs', goal:'Reproduce NDS key equations, FcE formula, masonry shear equations from memory.', tasks:['Write FcE = 0.822 × E\'min / (Le/d)² from memory','Write all NDS adjustment factors from memory','Write masonry shear capacity equation from memory','Solve 1 wood column problem from memory','Solve 1 masonry shear wall problem from memory'], resources:[{type:'drill',label:'Timed recall — wood and masonry'},{type:'practice',label:'Q50, Q56 blind redo from memory'}], why:'Wood and masonry are your other weak areas. The recall drill is the highest-ROI activity at this stage — it forces active retrieval, which is exactly how the exam works.'},
+
+  { id:46, week:7, topic:'mixed', title:'AIT Practice: Fill-in-Blank + Select-All Problems', time:'2 hrs', goal:'Practice alternative item type problems exclusively. No multiple choice. Train the new format.', tasks:['Redo all fill-in-blank questions from practice exam: Q10, Q14, Q31, Q38, Q69, Q73, Q78, Q79','Redo all select-multiple questions: Q29, Q37, Q39, Q70, Q71, Q72, Q75','Time each one — 6 min target','Review format: for fill-in-blank — work exact numerical answer, check units','For select-multiple — eliminate clearly wrong options first'], resources:[{type:'drill',label:'All AIT questions from practice exam — full redo'},{type:'practice',label:'Q10, Q14, Q29, Q31, Q37, Q38, Q69, Q70, Q71, Q72, Q73, Q75, Q78, Q79'}], why:'The PE Civil: Structural depth exam uses ONLY AIT questions. There are no standard multiple choice in the depth section. This format requires different solving habits — exact answers, careful selection.'},
+
+  { id:47, week:7, topic:'mixed', title:'Full Scenario Simulation: 12-Question Block (1 Scenario)', time:'2 hrs', goal:'Simulate one complete depth exam scenario — 12 questions on a single structural situation, 78 minutes.', tasks:['Select 12 related questions from practice exam (or create a scenario)','Work them as a connected set — share context between questions','Track: total time, questions answered, accuracy','Debrief: what structural context did you miss?','Note: real exam has 5 scenarios × 12 questions each'], resources:[{type:'drill',label:'1 complete 12-question scenario block — 78 min'},{type:'practice',label:'Use building seismic scenario or foundation scenario from practice exam'}], why:'The depth section is scenario-based — 5 scenarios, 12 questions each. Questions within a scenario share context. Practicing isolated problems does not prepare you for this format.'},
+
+  { id:48, week:7, topic:'mixed', title:'Timed Mixed Sprint: 30 Problems in 3 Hours', time:'3 hrs', goal:'Push exam-pace endurance. 30 problems, 3 hours. No stopping.', tasks:['30 fully mixed problems — set a 3-hour timer','Work at real exam pace — no pausing to review','Mark uncertain answers and continue — simulate flagging behavior','After: tally score, identify topic-level accuracy','Flag any question where you ran over 8 minutes — those are pace killers'], resources:[{type:'drill',label:'30-question sprint — 3 hrs'},{type:'practice',label:'Full mix from all 80 practice exam questions'}], why:'Endurance is underrated. The exam is 8 hours. Staying sharp at hour 6 is a real skill. Week 7 is where you start building that endurance.'},
+
+  { id:49, week:7, topic:'review', title:'WEEK 7 REVIEW — EXAM STRATEGY SESSION', time:'1.5 hrs', goal:'Review exam-day strategy. Understand the exam structure, question format, timing plan, and break strategy.', tasks:['Review: depth section is 5 scenarios × 12 questions, AIT only','Plan timing: 12 questions per scenario = ~78 min target each','Break strategy: scheduled break after scenario 3','Review exam software navigation from NCEES YouTube','Write your exam-day go-to list: first 5 topics you will ace to build confidence'], resources:[{type:'web',label:'NCEES YouTube — CBT exam navigation tutorial',url:'https://www.youtube.com/@ncees'},{type:'web',label:'NCEES Examinee Guide — exam format details',url:'https://ncees.org/exams/'}], why:'Exam strategy is a real score factor. Candidates who burn 20 minutes on one seismic problem and run out of time on easy steel problems fail — not because they did not know steel.'},
+
+  // WEEK 8: Final push — exam simulation and targeted repair
+  { id:50, week:8, topic:'mixed', title:'Final Push: Weak Area Repair — Seismic', time:'2 hrs', goal:'Last dedicated seismic day. Solve 10 seismic problems at exam pace. No reference during solve.', tasks:['10 seismic problems — ELF, SDC, Fp, diaphragm, connection force','Time each one — 6 min target','For any miss: write the correct solution immediately — no skipping','Check your Cs recall — write it first before opening any notes','Log: how many seismic problems can you now solve without reference?'], resources:[{type:'practice',label:'Q9, Q13, Q74, Q76, Q62 + 5 new seismic from external source'},{type:'drill',label:'Seismic recall + 10 problems — 2 hrs'}], why:'This is your last seismic-dedicated day. By now, ELF and Fp must be fully automatic. If you still cannot set up the base shear equation without help, that is the exam problem.'},
+
+  { id:51, week:8, topic:'mixed', title:'Final Push: Weak Area Repair — Foundations', time:'2 hrs', goal:'Last dedicated foundations day. Solve 10 foundation problems at exam pace.', tasks:['10 foundation problems — bearing, settlement, retaining, piles, earth pressure','Time each one — no reference during solve','Check: can you write the bearing capacity equation from memory?','Check: can you calculate Ka and draw the pressure diagram without help?','Log your accuracy'], resources:[{type:'practice',label:'Q2, Q3, Q4, Q6, Q41, Q42, Q64, Q70, Q79, Q80 — full redo blind'},{type:'drill',label:'10 foundation problems — 2 hrs'}], why:'Foundations was your highest-volume weakness. This is the last day to solidify it. Every foundation problem you get right on exam day is direct payoff from this bootcamp.'},
+
+  { id:52, week:8, topic:'mixed', title:'Final Push: Weak Area Repair — Wood + Masonry', time:'2 hrs', goal:'Last dedicated wood/masonry day. Solve 8 wood/masonry problems at exam pace.', tasks:['8 wood/masonry problems — columns, connections, shear walls, diaphragms','Time each one','Check FcE recall from memory','Check NDS adjustment factor recall — which factors apply to Fc? to Fb?','Log your accuracy and remaining gaps'], resources:[{type:'practice',label:'Q50, Q55, Q56, Q60, Q62 + 3 external wood/masonry problems'},{type:'drill',label:'8 wood/masonry problems — 90 min'}], why:'Last dedicated day for wood and masonry. If you are still guessing on adjustment factors, spend an extra hour on the recall drill tonight. These are fast points when you know the framework.'},
+
+  { id:53, week:8, topic:'mixed', title:'Full Simulation: 40-Question Depth Exam (4 Scenarios)', time:'4 hrs', goal:'Simulate 4 complete depth exam scenarios. 40 questions, 4 hours. Track by scenario.', tasks:['40 questions — scenario-based format — 4-hour timer','Work each 10-question block as a scenario unit','Take a 5-minute break between scenarios','After: score by scenario and by topic','Identify your strongest and weakest scenario types'], resources:[{type:'drill',label:'40-question depth simulation — 4 hrs'},{type:'practice',label:'Group practice exam questions into 4 scenario blocks of 10'}], why:'The depth exam is 60 questions across 5 scenarios. This simulation covers 4/5 of that. You need to know which scenario types (seismic building, foundation, steel, etc.) you are strongest on.'},
+
+  { id:54, week:8, topic:'mixed', title:'Timed Mixed Sprint: 40 Questions in 4 Hours', time:'4 hrs', goal:'Your final major timed sprint before the exam simulations. 40 problems, all topics, exam conditions.', tasks:['40 fully mixed problems — no topic sorting — 4-hour timer','Treat as a real exam — no looking anything up','After: score and analyze','Focus the remaining days on the biggest gaps revealed here','Rest after this session — cognitive recovery matters'], resources:[{type:'drill',label:'40-question mixed timed sprint — 4 hrs'},{type:'practice',label:'Full mix — include AIT formats: fill-blank, select-4, drag-drop type'}], why:'This is the last major diagnostic before you enter pure simulation mode. Let the data tell you what the last 5 days should focus on.'},
+
+  { id:55, week:8, topic:'review', title:'WEEK 8 REVIEW — FINAL STRATEGY PLAN', time:'1.5 hrs', goal:'Set your final study priorities for the last week. Identify exactly what to do each remaining day.', tasks:['Review accuracy by topic across the entire bootcamp','Identify your top 3 scoring topics — these are your exam anchors','Identify your bottom 2 — these get the last push','Write your exam-day priority order: which question types to tackle first','Set study schedule for days 56–60'], resources:[{type:'drill',label:'Full bootcamp accuracy review'},{type:'practice',label:'Write your personal exam strategy document'}], why:'At this point, you have the knowledge. The remaining work is consolidation, confidence, and strategy. The plan for the last 5 days should be derived from data, not intuition.'},
+
+  // WEEK 9 (Days 56-60): FINAL SPRINT — Exam simulation
+  { id:56, week:9, topic:'exam', title:'FINAL WEEK: 80-Question Full Exam Simulation #1', time:'8 hrs', goal:'Full 80-question exam simulation. 8-hour clock. Exam conditions. No reference for first 4 hours.', tasks:['Set an 8-hour timer','Work all 80 problems — simulate exam day exactly','Take the scheduled break after question 40','Do not review answers during the exam','Score after: record exact score by topic'], resources:[{type:'drill',label:'80-question full simulation — 8 hrs — all practice exam questions'},{type:'practice',label:'Simulate the actual exam: CBT AIT format, no Ctrl+F'}], why:'Day 56. Full simulation. Find out exactly where you stand.'},
+
+  { id:57, week:9, topic:'exam', title:'FINAL WEEK: Simulation Debrief + Targeted Repair', time:'3 hrs', goal:'Fully debrief simulation #1. Repair the top 3 gaps. No new topics.', tasks:['Score simulation #1 by topic — calculate % correct per area','Identify the 3 topics with worst accuracy','For each: find the root cause (recall failure? wrong formula? code misread?)','Solve 5 problems per weak topic — immediate remediation','Write the 10 equations you most frequently got wrong or slow on'], resources:[{type:'drill',label:'Full debrief session — simulation #1'},{type:'practice',label:'10–15 targeted problems from weak topics only'}], why:'The debrief is where simulations actually help. Running a simulation and not fully debriefing it is wasted time. Be surgical here.'},
+
+  { id:58, week:9, topic:'exam', title:'FINAL WEEK: Handbook Navigation Drill + Fast Reference', time:'2 hrs', goal:'Master navigation of the PE handbook. Know where the key tables and equations are. Practice 30-second lookups.', tasks:['Open the PE Structural Reference Handbook','Find: ASCE 7 seismic tables, load combinations, steel section properties, ACI beam equations, NDS adjustment factors','Time each lookup — target under 30 seconds','Practice the handbook navigation using the on-screen search bar method','Simulate looking up 10 items under time pressure'], resources:[{type:'web',label:'PE Structural Reference Handbook — download from MyNCEES',url:'https://ncees.org/exams/'},{type:'drill',label:'Handbook navigation drill — 30-second lookup targets'}], why:'You will use the handbook during the exam. Fumbling for 4 minutes to find a table costs you a problem. Train the navigation like a skill.'},
+
+  { id:59, week:9, topic:'exam', title:'FINAL WEEK: 80-Question Full Exam Simulation #2', time:'8 hrs', goal:'Second full exam simulation. Same conditions. Compare results to Simulation #1.', tasks:['80 questions — 8-hour timer — exam conditions','Take scheduled break at question 40','Track: how does your pace feel compared to simulation #1?','After: score by topic and compare to simulation #1','Identify improvements and remaining gaps'], resources:[{type:'drill',label:'80-question full simulation #2 — 8 hrs'},{type:'practice',label:'If possible, reorder the 80 practice questions so it feels fresh'}], why:'Second simulation gives you a trendline. If your score improved, the bootcamp is working. If it did not, today\'s debrief identifies why.'},
+
+  { id:60, week:9, topic:'exam', title:'FINAL DAY: Exam Eve Prep — Light Review, Rest, Strategy', time:'2 hrs', goal:'No heavy study. Confirm key recall. Review exam-day logistics. Rest.', tasks:['Spend 30 minutes: write your 20 highest-priority equations from memory','Spend 20 minutes: review exam-day logistics (test center, ID, calculator)','Spend 10 minutes: read your personal exam strategy document','Stop studying by early afternoon. Rest tonight.','Confirm: NCEES-approved calculator charged, ID matches registration'], resources:[{type:'web',label:'NCEES Examinee Guide — check-in procedures',url:'https://ncees.org/exams/'},{type:'drill',label:'20-equation recall drill — memory only'}], why:'Your preparation is done. Heavy studying on exam eve causes fatigue and confusion. Arrive rested, with a clear plan. The goal today is to walk in tomorrow confident and fresh.'},
+];
+
+const WEEKS = [
+  { week:1, label:'Week 1', focus:'Seismic + Foundations + Wood/Masonry' },
+  { week:2, label:'Week 2', focus:'Seismic Cont. + Analysis' },
+  { week:3, label:'Week 3', focus:'Steel + Concrete + Loads' },
+  { week:4, label:'Week 4', focus:'Deep Dives + Mixed Practice' },
+  { week:5, label:'Week 5', focus:'Targeted Repair + Bridges + Analysis' },
+  { week:6, label:'Week 6', focus:'Construction + Materials + Masonry' },
+  { week:7, label:'Week 7', focus:'Recall Sprint + AIT Practice + Endurance' },
+  { week:8, label:'Week 8', focus:'Final Push + Simulation' },
+  { week:9, label:'Days 56–60', focus:'Exam Simulation + Final Review' },
+];
+
+const MODULES = [
+  { name:'Seismic / ASCE 7', strength:'weak', tag:'seismic', desc:'ASCE 7-16 seismic design: SDC, ELF procedure, base shear, component forces, diaphragm design. Appears in ~10–14 questions.', subtopics:['SDC Determination','ELF Procedure (Cs, V, Fx)','Site Class & Spectral Acceleration','Irregular Structures','Component Forces (Fp)','Diaphragm Classification','Seismic Load Path'], mistakes:['Forgetting the 2/3 factor in SDS','Using wrong Fa/Fv for site class','Missing the SDC D special requirements'], examCount:'~10–14 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=ASCE+7+seismic+design+PE+exam',label:'ASCE 7 Seismic PE Review'},{type:'web',url:'https://www.engineeringproguides.com',label:'Engineering Pro Guides'}]},
+  { name:'Foundations', strength:'weak', tag:'foundations', desc:'Bearing capacity, settlement (immediate + consolidation), lateral earth pressure, retaining walls, piles, drilled shafts. Appears ~8–12 questions.', subtopics:['Bearing Capacity (Terzaghi/Meyerhof)','Settlement (Consolidation)','Lateral Earth Pressure (Rankine/Coulomb)','Retaining Wall Stability (OT, Sliding)','Spread Footings','Deep Foundations (Piles, Drilled Shafts)','Soil Classification (USCS/AASHTO)','SPT N-values'], mistakes:['Forgetting GWT correction in bearing capacity','Using Ka for passive pressure','Forgetting the surcharge term in earth pressure'], examCount:'~8–12 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=bearing+capacity+PE+exam',label:'Bearing Capacity PE Review'}]},
+  { name:'Wood Design (NDS)', strength:'weak', tag:'wood', desc:'NDS 2018: adjustment factors, sawn lumber, columns, beams, connections. Appears ~4–6 questions.', subtopics:['Adjustment Factors (CD, CM, Ct, CF, Ci, Cp)','Beam Design (Fb, Fv)','Column Design (FcE, Cp)','Connection Design (lag screws, bolts, nails)','Diaphragms (drag struts, chords)','Shear Walls'], mistakes:['Missing which adjustment factors apply to Fc vs Fb','Using wrong Emin vs E for column buckling','Forgetting CD for load duration'], examCount:'~4–6 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=NDS+wood+design+PE+exam',label:'NDS Wood Design PE Review'}]},
+  { name:'Masonry (TMS 402)', strength:'weak', tag:'masonry', desc:'TMS 402/602 ASD: shear walls, flexural walls, out-of-plane, anchorage. Appears ~3–5 questions.', subtopics:['Allowable Stress Design (ASD)','Shear Wall Design','Out-of-Plane (Slender Wall)','Anchorage to Masonry','Wall-to-Diaphragm Connection'], mistakes:['Confusing ASD and strength design for masonry','Forgetting the Em = 900 × f\'m relationship','Missing the special inspection requirements'], examCount:'~3–5 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=masonry+TMS+402+PE+exam',label:'TMS 402 Masonry PE Review'}]},
+  { name:'Structural Analysis', strength:'strong', tag:'analysis', desc:'Statics, indeterminate structures, moment distribution, influence lines, deflections. Appears ~8–12 questions.', subtopics:['Statics and Free Body Diagrams','Shear and Moment Diagrams','Truss Analysis (Method of Sections/Joints)','Moment Distribution','Influence Lines','Moving Loads (max moment)','Beam Deflections (superposition)','Cable Analysis'], mistakes:['Sign errors in moment distribution','Wrong influence line ordinates for max moment from moving loads','Forgetting EI units in deflection calculations'], examCount:'~8–12 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=structural+analysis+PE+exam',label:'Structural Analysis PE Review'}]},
+  { name:'Steel Design (AISC)', strength:'strong', tag:'steel', desc:'AISC 15th edition: flexure, shear, columns, connections, deflection. Appears ~10–14 questions.', subtopics:['Flexure (Chapter F, LTB)','Shear (Chapter G)','Columns (Chapter E, KL/r)','Tension Members (Chapter D)','Combined Loading (Chapter H)','Connections (Bolts, Welds)','Deflection Criteria'], mistakes:['Using wrong Cb — not 1.0','Confusing Lp vs Lr for LTB','Wrong φ factor for weld vs bolt design'], examCount:'~10–14 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=AISC+steel+design+PE+exam',label:'AISC Steel Design PE Review'}]},
+  { name:'Concrete Design (ACI 318)', strength:'strong', tag:'concrete', desc:'ACI 318-14: flexure, shear, columns, slabs, footings, anchorage, prestressed. Appears ~10–14 questions.', subtopics:['Flexure (φMn, As calculation)','Shear (Vc + Vs, stirrups)','One-Way Slabs','Two-Way Slabs (punching shear)','Columns (interaction diagrams)','Footings (one-way, two-way shear)','Prestressed Concrete (fiber stress)','Anchorage (Chapter 17)'], mistakes:['Forgetting 0.85f\'c in compression block','Using wrong β₁ for f\'c > 4000 psi','Confusing critical section location for one-way vs two-way shear'], examCount:'~10–14 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=ACI+318+concrete+design+PE+exam',label:'ACI 318 Concrete PE Review'}]},
+  { name:'Loads (ASCE 7, IBC)', strength:'medium', tag:'loads', desc:'Dead, live, snow, wind, seismic load generation, and load combinations. Appears ~6–10 questions.', subtopics:['Dead and Live Loads','Snow Loads (ASCE 7 Ch. 7)','Wind Loads (MWFRS, C&C)','Load Combinations (LRFD and ASD)','Bridge Loads (AASHTO)','Earth Pressure as Load'], mistakes:['Using wrong Ie (importance factor)','Applying wrong load combo for uplift (0.9D dominates)','Forgetting Kzt topographic factor'], examCount:'~6–10 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=ASCE+7+loads+PE+exam',label:'ASCE 7 Load Generation PE Review'}]},
+  { name:'Construction & Temp Structures', strength:'medium', tag:'loads', desc:'Formwork, shoring, OSHA excavation, cranes, quality assurance, construction administration. Appears ~4–6 questions.', subtopics:['Formwork Design (ACI 347)','Shoring Load Distribution','OSHA Excavation (Type A/B/C)','Crane Load Charts','Special Inspection (IBC Ch. 17)','Quality Assurance (Bolt Inspection, Concrete Acceptance)'], mistakes:['Confusing OSHA soil type A vs B slope requirements','Missing that Level 1 shores carry loads from Level 2 during pour','Not knowing which bolt inspection tasks are required vs optional'], examCount:'~4–6 questions', resources:[{type:'yt',url:'https://www.youtube.com/results?search_query=formwork+shoring+construction+PE+exam',label:'Construction Topics PE Review'}]},
+];
+
+const HANDBOOK_DRILLS = [
+  { title:'Find the Seismic Tables', desc:'Locate ASCE 7 Table 11.4-1, 11.4-2, and 12.8-1 in under 60 seconds each', locked:true },
+  { title:'Find Load Combinations', desc:'Locate ASCE 7 Table 2.3-1 (LRFD) and 2.4-1 (ASD) in under 30 seconds', locked:true },
+  { title:'Find Steel Section Properties', desc:'Locate W14×53 section properties (Ix, Sx, Zx) in under 60 seconds', locked:true },
+  { title:'Find ACI Beam Equations', desc:'Locate nominal flexural strength equation and shear capacity in ACI chapter', locked:true },
+  { title:'Find NDS Adjustment Factors', desc:'Locate wood column stability factor Cp equation in under 45 seconds', locked:true },
+  { title:'Find Bearing Capacity Tables', desc:'Locate IBC Table 1806.2 presumptive bearing values in under 45 seconds', locked:true },
+  { title:'Find Masonry Allowable Stresses', desc:'Locate TMS 402 ASD allowable stress tables in under 60 seconds', locked:true },
+  { title:'30-Second Lookup Drill: Any Topic', desc:'Random topic lookup — beat the clock on 10 consecutive reference searches', locked:true },
+  { title:'Equation Map: Seismic', desc:'Build a mental map of all seismic equations and their locations', locked:true },
+  { title:'Equation Map: Foundations', desc:'Build a mental map of all geotechnical equations and their handbook locations', locked:true },
+  { title:'Equation Map: Steel Flexure', desc:'Locate and trace AISC Chapter F flexural design flowchart', locked:true },
+  { title:'Speed Round: Mixed 10 Lookups', desc:'Find 10 randomly selected values across all reference materials in under 8 min total', locked:true },
+];
+
+const MOCK_EXAMS = [
+  { title:'Week 2 Mixed Set', desc:'20 questions from Weeks 1–2 (Seismic, Foundations, Wood, Analysis). Your first timed practice.', questions:20, time:'2 hrs', topics:'Seismic, Foundations, Wood, Analysis', status:'available' },
+  { title:'Week 3 Mixed Set', desc:'20 questions from Weeks 1–3 (adds Steel, Concrete, Loads). Measure early-stage mastery.', questions:20, time:'2 hrs', topics:'All covered so far', status:'available' },
+  { title:'4-Week Checkpoint Exam', desc:'40 questions across all topics through Week 4. This is your critical 30-day diagnostic.', questions:40, time:'4 hrs', topics:'Full mix — all topics', status:'available' },
+  { title:'6-Week Mid-Point Simulation', desc:'60 questions in 6 hours. The most important practice exam before the final push.', questions:60, time:'6 hrs', topics:'Full mix — all topics', status:'available' },
+  { title:'Week 7 Endurance Sprint', desc:'30 questions in 3 hours. Build exam-length stamina and pace consistency.', questions:30, time:'3 hrs', topics:'Full mix', status:'available' },
+  { title:'Week 8 Scenario Simulation', desc:'40 questions grouped into 4 scenarios of 10. Simulates depth exam format.', questions:40, time:'4 hrs', topics:'Scenario-based — depth format', status:'available' },
+  { title:'Full Exam Simulation #1 (Day 56)', desc:'80 questions in 8 hours. First complete exam simulation. Treat as real.', questions:80, time:'8 hrs', topics:'Complete — all topics', status:'available' },
+  { title:'Full Exam Simulation #2 (Day 59)', desc:'80 questions in 8 hours. Final simulation. Compare to Simulation #1 results.', questions:80, time:'8 hrs', topics:'Complete — all topics', status:'available' },
+];
+
+const REF_MAP = [
+  { section:'ASCE 7-16', items:['Ch. 2: Load Combinations (Table 2.3-1, 2.4-1)','Ch. 7: Snow Loads (Ce, Ct, I factors, Pg to Pf)','Ch. 26–27: Wind: MWFRS Directional Procedure','Ch. 11: Seismic: Ss, S1, site class','Ch. 11.4: Fa, Fv factors (Tables 11.4-1, 11.4-2)','Ch. 11.6: SDC Determination (Tables 11.6-1, 11.6-2)','Ch. 12.8: ELF Procedure (Cs, V, Fx distribution)','Ch. 12.3: Structural Irregularities','Ch. 13: Component and Cladding (Fp formula)'] },
+  { section:'AISC 15th Edition', items:['Table 1-1: W-shape properties (Ix, Sx, Zx, ry, J)','Ch. D: Tension members','Ch. E: Compression/Columns (KL/r, φcFcr)','Ch. F: Flexure (Lp, Lr, Cb, φbMn)','Ch. G: Shear','Ch. H: Combined loading (interaction equation)','Table 3-2: Available moments for W-shapes','Ch. J: Connections (bolts, welds)','Part 1: Bolt shear/bearing tables'] },
+  { section:'ACI 318-14', items:['Ch. 9: Strength reduction factors (Table 21.2.1)','Ch. 22: Flexure (Mn = As × fy × (d - a/2))','Ch. 22: Shear (Vc = 2λ√f\'c × bw × d)','Ch. 24: Deflection','Ch. 8: Two-way slab punching shear','Ch. 22.8: Footings — one-way and two-way shear','Ch. 17: Anchoring to concrete (breakout, pullout, φ factors)','Ch. 26: Concrete mix acceptance criteria'] },
+  { section:'NDS 2018', items:['Supplement Table 4A/4B: Reference design values (Fc, Fb, Fv, E, Emin)','Supplement Table 4D: Posts and Timbers','Ch. 2: Adjustment factors (CD, CM, Ct, CF, Ci)','Ch. 3: Member design (beams, columns)','Ch. 3.7: Column stability factor Cp','FcE = 0.822 × E\'min / (Le/d)²'] },
+  { section:'TMS 402/602', items:['Allowable stresses: Fm, Fv, Ft','Ch. 8: Allowable stress design','Shear wall design: Fvm, Fvs','Out-of-plane wall design'] },
+  { section:'AASHTO LRFD 8th', items:['Table 3.4.1-1: Load factors and combinations','HL-93 live load (truck + lane)','Deck slab effective span','Bridge bearing design'] },
+  { section:'IBC 2018', items:['Table 1806.2: Presumptive bearing values','Ch. 17: Special inspection requirements','Ch. 18: Soils and foundations — pile requirements','Pile FS requirements (Table 1810.3.3.1.9)'] },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  completedDays: JSON.parse(localStorage.getItem('completedDays') || '[]'),
+  inProgressDays: JSON.parse(localStorage.getItem('inProgressDays') || '[]'),
+  notes: JSON.parse(localStorage.getItem('notes') || '{}'),
+  currentFilter: 'all',
+  currentView: 'dashboard',
+  startDate: localStorage.getItem('startDate') || null,
+};
+
+function saveState() {
+  localStorage.setItem('completedDays', JSON.stringify(state.completedDays));
+  localStorage.setItem('inProgressDays', JSON.stringify(state.inProgressDays));
+  localStorage.setItem('notes', JSON.stringify(state.notes));
+  if (state.startDate) localStorage.setItem('startDate', state.startDate);
+}
+
+// ============================================================
+// VIEW MANAGEMENT
+// ============================================================
+function showView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + viewId).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  state.currentView = viewId;
+  if (viewId === 'schedule') renderDayList();
+}
+
+// ============================================================
+// DAY STATUS
+// ============================================================
+function getDayStatus(dayId) {
+  if (state.completedDays.includes(dayId)) return 'complete';
+  if (state.inProgressDays.includes(dayId)) return 'in-progress';
+  return 'not-started';
+}
+
+function toggleComplete(dayId) {
+  const idx = state.completedDays.indexOf(dayId);
+  if (idx === -1) {
+    state.completedDays.push(dayId);
+    const iIdx = state.inProgressDays.indexOf(dayId);
+    if (iIdx !== -1) state.inProgressDays.splice(iIdx, 1);
+  } else {
+    state.completedDays.splice(idx, 1);
+  }
+  saveState();
+  updateDashboard();
+  if (state.currentView === 'schedule') renderDayList();
+}
+
+function markInProgress(dayId) {
+  if (!state.inProgressDays.includes(dayId)) state.inProgressDays.push(dayId);
+  if (state.completedDays.includes(dayId)) {
+    state.completedDays.splice(state.completedDays.indexOf(dayId), 1);
+  }
+  saveState();
+  updateDashboard();
+  if (state.currentView === 'schedule') renderDayList();
+}
+
+function markRevisit(dayId) {
+  alert('Day ' + dayId + ' flagged for revisit. Add it to your notes and re-check this week.');
+}
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+function getTagClass(topic) {
+  const map = { seismic:'tag-seismic', foundations:'tag-foundations', wood:'tag-wood', masonry:'tag-masonry', steel:'tag-steel', concrete:'tag-concrete', analysis:'tag-analysis', loads:'tag-loads', review:'tag-review', mixed:'tag-mixed', exam:'tag-exam', retaining:'tag-retaining' };
+  return map[topic] || 'tag-review';
+}
+
+function getTagLabel(topic) {
+  const map = { seismic:'SEISMIC', foundations:'FOUNDATIONS', wood:'WOOD/MASONRY', masonry:'MASONRY', steel:'STEEL', concrete:'CONCRETE', analysis:'ANALYSIS', loads:'LOADS', review:'REVIEW', mixed:'MIXED', exam:'EXAM SIM', retaining:'RETAINING' };
+  return map[topic] || topic.toUpperCase();
+}
+
+function renderDayCard(day) {
+  const status = getDayStatus(day.id);
+  const note = state.notes[day.id] || '';
+  const tasks = day.tasks || [];
+  const resources = day.resources || [];
+
+  return `
+  <div class="day-card" id="daycard-${day.id}" data-status="${status}" data-topic="${day.topic}" data-week="${day.week}">
+    <div class="day-card-header" onclick="toggleDayCard(${day.id})">
+      <div class="day-number">
+        <div>DAY</div>
+        <div style="font-size:14px">${day.id}</div>
+      </div>
+      <div class="day-info">
+        <div class="day-title">${day.title}</div>
+        <div class="day-meta">
+          <span class="day-topic-tag ${getTagClass(day.topic)}">${getTagLabel(day.topic)}</span>
+          <span class="day-time">⏱ ${day.time}</span>
+          ${status === 'complete' ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--status-complete);font-weight:600">✓ COMPLETE</span>' : ''}
+          ${status === 'in-progress' ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--status-in-progress);font-weight:600">● IN PROGRESS</span>' : ''}
+        </div>
+      </div>
+      <span class="day-chevron">▶</span>
+    </div>
+    <div class="day-card-body">
+      <div class="day-goal">${day.goal}</div>
+
+      <div class="day-sections">
+        <div>
+          <div class="day-section-label">Tasks</div>
+          <ul class="checklist">
+            ${tasks.map((t,i) => `<li id="task-${day.id}-${i}"><input type="checkbox" onchange="handleTaskCheck(${day.id},${i},this)"> ${t}</li>`).join('')}
+          </ul>
+        </div>
+        <div>
+          <div class="day-section-label">Resources</div>
+          <ul class="resource-list">
+            ${resources.map(r => `
+              <li class="resource-item">
+                <span class="resource-type rtype-${r.type}">${r.type === 'yt' ? 'YT' : r.type === 'web' ? 'WEB' : r.type === 'drill' ? 'DRILL' : 'PRACTICE'}</span>
+                ${r.url ? `<a href="${r.url}" target="_blank" style="color:var(--accent-blue);text-decoration:none;">${r.label}</a>` : `<span>${r.label}</span>`}
+              </li>`).join('')}
+          </ul>
+        </div>
+      </div>
+
+      <div class="why-matters">
+        <strong>WHY THIS MATTERS ON EXAM DAY</strong>
+        ${day.why}
+      </div>
+
+      <textarea class="notes-field" placeholder="Notes for Day ${day.id}..." onchange="saveNote(${day.id},this.value)">${note}</textarea>
+
+      <div class="day-actions">
+        ${status !== 'complete' ?
+          `<button class="btn btn-primary" onclick="toggleComplete(${day.id})">Mark Complete ✓</button>` :
+          `<button class="btn btn-complete" onclick="toggleComplete(${day.id})">✓ Completed — Undo</button>`
+        }
+        ${status !== 'in-progress' && status !== 'complete' ?
+          `<button class="btn btn-secondary" onclick="markInProgress(${day.id})">Mark In Progress</button>` : ''
+        }
+        <button class="btn btn-danger" onclick="markRevisit(${day.id})">⚑ Flag Revisit</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleDayCard(dayId) {
+  const card = document.getElementById('daycard-' + dayId);
+  card.classList.toggle('expanded');
+}
+
+function handleTaskCheck(dayId, taskIdx, checkbox) {
+  const li = document.getElementById('task-' + dayId + '-' + taskIdx);
+  if (checkbox.checked) li.classList.add('checked');
+  else li.classList.remove('checked');
+}
+
+function saveNote(dayId, value) {
+  state.notes[dayId] = value;
+  saveState();
+}
+
+function renderDayList() {
+  const container = document.getElementById('dayList');
+  container.innerHTML = '';
+
+  const filter = state.currentFilter;
+  const weeksToShow = [...new Set(DAYS.map(d => d.week))];
+
+  weeksToShow.forEach(weekNum => {
+    const weekData = WEEKS.find(w => w.week === weekNum);
+    const daysInWeek = DAYS.filter(d => {
+      if (d.week !== weekNum) return false;
+      if (filter === 'all') return true;
+      return d.topic === filter || (filter === 'wood' && d.topic === 'masonry');
+    });
+    if (daysInWeek.length === 0) return;
+
+    const completedInWeek = daysInWeek.filter(d => state.completedDays.includes(d.id)).length;
+    const weekHtml = `
+      <div class="week-group" id="week-group-${weekNum}">
+        <div class="week-group-header" onclick="toggleWeekGroup(${weekNum})">
+          <span class="week-label">${weekData ? weekData.label : 'Week ' + weekNum}</span>
+          <span class="week-topic">${weekData ? '— ' + weekData.focus : ''}</span>
+          <span class="week-progress-text">${completedInWeek}/${daysInWeek.length} complete</span>
+          <span class="week-chevron">▼</span>
+        </div>
+        <div class="week-days">
+          ${daysInWeek.map(d => renderDayCard(d)).join('')}
+        </div>
+      </div>`;
+    container.insertAdjacentHTML('beforeend', weekHtml);
+  });
+}
+
+function toggleWeekGroup(weekNum) {
+  const group = document.getElementById('week-group-' + weekNum);
+  group.classList.toggle('collapsed');
+}
+
+function renderWeekNav() {
+  const container = document.getElementById('weekNav');
+  container.innerHTML = '';
+  WEEKS.forEach(w => {
+    const daysInWeek = DAYS.filter(d => d.week === w.week);
+    const completed = daysInWeek.filter(d => state.completedDays.includes(d.id)).length;
+    const isComplete = completed === daysInWeek.length;
+    container.insertAdjacentHTML('beforeend', `
+      <li onclick="goToWeek(${w.week})">
+        ${w.label}
+        <span class="week-badge ${isComplete ? 'complete' : ''}">${completed}/${daysInWeek.length}</span>
+      </li>`);
+  });
+}
+
+function renderModules() {
+  const container = document.getElementById('modulesGrid');
+  container.innerHTML = MODULES.map(m => `
+    <div class="module-card ${m.strength === 'weak' ? 'weak-module' : m.strength === 'strong' ? 'strong-module' : ''}">
+      <div class="module-card-header">
+        <div class="module-name">${m.name}</div>
+        <span class="module-badge ${m.strength === 'weak' ? 'strength-weak' : m.strength === 'strong' ? 'strength-strong' : 'strength-medium'}">${m.strength.toUpperCase()}</span>
+      </div>
+      <div class="module-desc">${m.desc}</div>
+      <ul class="module-subtopics">
+        ${m.subtopics.map(s => `<li class="module-subtopic">${s}</li>`).join('')}
+      </ul>
+      ${m.mistakes ? `<div style="margin-top:12px;font-size:11px;color:var(--weak-red);"><strong>Common Mistakes:</strong> ${m.mistakes.join(' · ')}</div>` : ''}
+      <div class="module-exam-count">Estimated exam questions: <strong>${m.examCount}</strong></div>
+    </div>`).join('');
+}
+
+function renderHandbookDrills() {
+  const container = document.getElementById('handbookDrills');
+  container.innerHTML = HANDBOOK_DRILLS.map(d => `
+    <div class="drill-card ${d.locked ? 'locked' : ''}">
+      <div class="drill-title">${d.locked ? '🔒 ' : ''}${d.title}</div>
+      <div class="drill-desc">${d.desc}</div>
+      ${d.locked ? '<div style="font-size:10px;color:var(--text-muted);margin-top:6px;font-family:var(--font-mono)">UPLOAD HANDBOOK TO UNLOCK</div>' : ''}
+    </div>`).join('');
+
+  const refMap = document.getElementById('refMap');
+  refMap.innerHTML = REF_MAP.map((section, i) => `
+    <div style="border-bottom:1px solid var(--border-light)">
+      <div style="padding:10px 16px;background:var(--off-white);font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-secondary);letter-spacing:0.05em;cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+        ${section.section} ▾
+      </div>
+      <div style="padding:10px 16px;display:none;">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;">
+          ${section.items.map(item => `<li style="font-size:12px;color:var(--text-secondary);padding:4px 0;border-bottom:1px solid var(--border-light);">📍 ${item}</li>`).join('')}
         </ul>
-      </article>
+      </div>
+    </div>`).join('');
+}
 
-      <article class="card">
-        <h2>2) Analysis of Structures — Forces and Load Effects</h2>
-        <div class="count">17–26 questions</div>
-        <ul>
-          <li>Shear and moment diagrams</li>
-          <li>Axial tension/compression, shear, flexure, and combined stresses</li>
-          <li>Deflection checks</li>
-          <li>Special topics: torsion, buckling, fatigue, bearing, thermal effects</li>
-        </ul>
-      </article>
+function renderMockExams() {
+  const container = document.getElementById('mockSection');
+  container.innerHTML = MOCK_EXAMS.map(m => `
+    <div class="mock-card">
+      <div class="mock-card-header">
+        <div class="mock-title">${m.title}</div>
+        <span class="filter-btn" style="cursor:default">${m.status === 'available' ? '✓ Available' : 'Locked'}</span>
+      </div>
+      <div class="mock-desc">${m.desc}</div>
+      <div class="mock-stats">
+        <div class="mock-stat">Questions: <span>${m.questions}</span></div>
+        <div class="mock-stat">Time: <span>${m.time}</span></div>
+        <div class="mock-stat">Topics: <span>${m.topics}</span></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;">
+        <button class="btn btn-primary" onclick="alert('Download or use the 80 questions from your NCEES practice exam as source material. Shuffle and group as needed for this set.')">Start Exam</button>
+        <button class="btn btn-secondary">View Answer Key</button>
+      </div>
+    </div>`).join('');
+}
 
-      <article class="card">
-        <h2>3) Temporary Structures and Other Topics</h2>
-        <div class="count">5–8 questions</div>
-        <ul>
-          <li>Special inspections and submittals</li>
-          <li>Formwork, falsework, shoring/reshoring, scaffolding, bracing, anchorage</li>
-          <li>Impact of construction on adjacent facilities</li>
-          <li>Safety topics (construction/roadside/work zone)</li>
-        </ul>
-      </article>
+function renderStrengthWidget() {
+  const container = document.getElementById('strengthWidget');
+  const topics = [
+    { label:'Seismic / ASCE 7', level:'weak' },
+    { label:'Foundations', level:'weak' },
+    { label:'Wood Design', level:'weak' },
+    { label:'Masonry Design', level:'weak' },
+    { label:'Steel Design', level:'strong' },
+    { label:'Concrete Design', level:'strong' },
+    { label:'Struct. Analysis', level:'strong' },
+    { label:'Loads / ASCE 7', level:'medium' },
+    { label:'Construction', level:'medium' },
+  ];
+  container.innerHTML = topics.map(t => `
+    <div class="topic-strength">
+      <span class="strength-label">${t.label}</span>
+      <span class="strength-badge ${t.level === 'weak' ? 'strength-weak' : t.level === 'strong' ? 'strength-strong' : 'strength-medium'}">${t.level.toUpperCase()}</span>
+    </div>`).join('');
+}
 
-      <article class="card">
-        <h2>4) Design &amp; Details — Materials and Material Properties</h2>
-        <div class="count">10–15 questions</div>
-        <ul>
-          <li>Soil classification and soil properties</li>
-          <li>Concrete, steel, timber, masonry behavior and use</li>
-          <li>Material test methods and specification conformance</li>
-        </ul>
-      </article>
+function renderCoverageMap() {
+  const container = document.getElementById('coverageMap');
+  const topicCounts = [
+    { topic:'Seismic/ASCE 7', est:'10–14', myWeakness:true },
+    { topic:'Steel (AISC)', est:'10–14', myWeakness:false },
+    { topic:'Concrete (ACI)', est:'10–14', myWeakness:false },
+    { topic:'Foundations/Geo', est:'8–12', myWeakness:true },
+    { topic:'Structural Analysis', est:'8–12', myWeakness:false },
+    { topic:'Loads & Combos', est:'6–10', myWeakness:false },
+    { topic:'Wood (NDS)', est:'4–6', myWeakness:true },
+    { topic:'Masonry (TMS)', est:'3–5', myWeakness:true },
+    { topic:'Construction/Temp', est:'4–6', myWeakness:false },
+  ];
+  container.innerHTML = topicCounts.map(t => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--border-light);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:${t.myWeakness ? 'var(--weak-red)' : 'var(--status-complete)'};flex-shrink:0"></div>
+        <span style="font-size:12px;font-weight:500;color:var(--text-primary)">${t.topic}</span>
+        ${t.myWeakness ? '<span style="font-family:var(--font-mono);font-size:9px;color:var(--weak-red);font-weight:600;padding:2px 6px;background:var(--weak-bg);border-radius:3px">WEAK</span>' : ''}
+      </div>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">~${t.est} questions</span>
+    </div>`).join('');
+}
 
-      <article class="card full">
-        <h2>5) Design &amp; Details — Component Design and Detailing</h2>
-        <div class="count">26–39 questions</div>
-        <ul>
-          <li>Horizontal members (beams, slabs, diaphragms, struts)</li>
-          <li>Vertical members (columns, bearing walls, shear walls)</li>
-          <li>Systems (trusses, braces, frames, composite)</li>
-          <li>Connections (bolted, welded, anchors, embedments)</li>
-          <li>Shallow and deep foundations + retaining walls</li>
-        </ul>
-      </article>
+function renderTodayWidget() {
+  const today = getCurrentDayNumber();
+  const day = DAYS.find(d => d.id === today);
+  if (!day) return;
 
-      <article class="card full">
-        <h2>Practice Example Questions</h2>
-        <p class="sub">I included a starter set below so your page has direct practice aligned to each NCEES topic area.</p>
+  document.getElementById('todayFocus').textContent = `Day ${day.id} — ${day.title}`;
+  document.getElementById('todayTopicLabel').textContent = `Topic: ${getTagLabel(day.topic)} · Est. ${day.time}`;
+  document.getElementById('sidebarFocus').textContent = `Day ${day.id} — ${day.title}`;
+  document.getElementById('sidebarTopic').textContent = `${getTagLabel(day.topic)} · ${day.time}`;
 
-        <div class="q">
-          <h3>Q1 — Load combinations (Sec. 1)</h3>
-          <p>A steel beam supports dead, live, and roof snow loads. Determine the controlling ASCE 7 LRFD load combination and factored demand.</p>
-        </div>
+  const taskList = document.getElementById('todayTaskList');
+  taskList.innerHTML = (day.tasks || []).slice(0, 4).map(t => `
+    <li class="today-task"><span>→</span> ${t}</li>`).join('');
 
-        <div class="q">
-          <h3>Q2 — Seismic base shear path (Sec. 1 + 2)</h3>
-          <p>Given a 3-story shear wall building with diaphragm reactions, compute the story shear distribution and overturning moment at the base.</p>
-        </div>
+  const dateEl = document.getElementById('todayDate');
+  dateEl.textContent = new Date().toLocaleDateString('en-US', { weekday:'long', month:'short', day:'numeric' });
+}
 
-        <div class="q">
-          <h3>Q3 — Shear/moment + deflection (Sec. 2)</h3>
-          <p>For a simply supported beam with uniform and point loads, draw V-M diagrams and find maximum deflection using EI.</p>
-        </div>
+function getCurrentDayNumber() {
+  if (!state.startDate) {
+    if (state.completedDays.length > 0) return Math.max(...state.completedDays) + 1;
+    return 1;
+  }
+  const start = new Date(state.startDate);
+  const now = new Date();
+  const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
+  return Math.min(Math.max(diff, 1), 60);
+}
 
-        <div class="q">
-          <h3>Q4 — Temporary bracing check (Sec. 3)</h3>
-          <p>A formwork panel is laterally braced during concrete placement. Check brace force and anchorage adequacy under construction loads.</p>
-        </div>
+function updateDashboard() {
+  const completed = state.completedDays.length;
+  const today = getCurrentDayNumber();
+  const pct = (completed / 60 * 100).toFixed(0);
+  const dayPct = (today / 60 * 100).toFixed(0);
 
-        <div class="q">
-          <h3>Q5 — Material properties (Sec. 4)</h3>
-          <p>Given index properties and SPT data, classify soil and estimate bearing behavior impacts for footing serviceability checks.</p>
-        </div>
+  document.getElementById('daysElapsed').textContent = today;
+  document.getElementById('daysComplete').textContent = completed;
+  document.getElementById('dayProgressBar').style.width = dayPct + '%';
+  document.getElementById('completionBar').style.width = pct + '%';
 
-        <div class="q">
-          <h3>Q6 — RC flexural design (Sec. 5)</h3>
-          <p>Design tension steel for a rectangular reinforced concrete beam section under factored moment per ACI 318 and verify strain limits.</p>
-        </div>
-      </article>
-    </section>
+  const weekNum = Math.ceil(today / 7);
+  const clampedWeek = Math.min(weekNum, WEEKS.length);
+  document.getElementById('currentWeek').textContent = clampedWeek;
+  const weekData = WEEKS.find(w => w.week === clampedWeek);
+  if (weekData) document.getElementById('currentWeekFocus').textContent = weekData.focus;
 
-    <footer>
-      Based on NCEES Civil–Structural CBT exam specifications effective April 2024. Add your own worked solutions under each question.
-    </footer>
-  </div>
+  renderWeekNav();
+}
+
+// ============================================================
+// FILTER + SEARCH
+// ============================================================
+function setFilter(filter, btn) {
+  state.currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderDayList();
+}
+
+function filterByTopic(topic) {
+  state.currentFilter = topic;
+  showView('schedule');
+  renderDayList();
+}
+
+function searchDays(query) {
+  if (!query) { renderDayList(); return; }
+  const lower = query.toLowerCase();
+  const container = document.getElementById('dayList');
+  container.innerHTML = '';
+  const matched = DAYS.filter(d =>
+    d.title.toLowerCase().includes(lower) ||
+    d.topic.toLowerCase().includes(lower) ||
+    (d.goal || '').toLowerCase().includes(lower)
+  );
+  matched.forEach(d => container.insertAdjacentHTML('beforeend', `<div style="margin-bottom:4px">${renderDayCard(d)}</div>`));
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goToToday() {
+  const today = getCurrentDayNumber();
+  showView('schedule');
+  renderDayList();
+  setTimeout(() => {
+    const el = document.getElementById('daycard-' + today);
+    if (el) {
+      el.scrollIntoView({ behavior:'smooth', block:'center' });
+      el.classList.add('expanded');
+    }
+  }, 100);
+}
+
+function goToWeek(weekNum) {
+  showView('schedule');
+  renderDayList();
+  setTimeout(() => {
+    const el = document.getElementById('week-group-' + weekNum);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 100);
+}
+
+// ============================================================
+// HANDBOOK UPLOAD (PLACEHOLDER)
+// ============================================================
+function handleHandbookUpload(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    document.querySelector('.handbook-upload-area').innerHTML = `
+      <div style="font-size:24px;margin-bottom:8px">✅</div>
+      <div style="font-size:14px;font-weight:700;color:var(--status-complete)">Handbook Uploaded</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px">${file.name}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:8px">Handbook drills are now available. Start with "Find the Seismic Tables."</div>
+    `;
+    HANDBOOK_DRILLS.forEach(d => d.locked = false);
+    renderHandbookDrills();
+    document.querySelector('.handbook-widget').innerHTML = `
+      <div style="font-size:20px;margin-bottom:6px">📖</div>
+      <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--status-complete);margin-bottom:4px">Handbook Loaded ✓</div>
+      <div style="font-size:11px;color:var(--text-muted);">${file.name}</div>
+      <button class="upload-btn" style="margin-top:8px" onclick="showView('handbook')">Open Handbook Drills →</button>`;
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  if (!state.startDate) {
+    if (confirm('Set today as Day 1 of your 60-day bootcamp?\n\nOK = Start today\nCancel = I will set the date manually')) {
+      state.startDate = new Date().toISOString().split('T')[0];
+      saveState();
+    }
+  }
+  updateDashboard();
+  renderTodayWidget();
+  renderModules();
+  renderHandbookDrills();
+  renderMockExams();
+  renderStrengthWidget();
+  renderCoverageMap();
+  renderWeekNav();
+  renderDayList(); // pre-render for when schedule tab is opened
+
+  // Start on dashboard
+  showView('dashboard');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
