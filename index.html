@@ -1,328 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PE Civil: Structural — 60-Day Bootcamp</title>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-:root{--white:#fff;--off:#f7f7f5;--border:#d6d6d2;--borderl:#ebebea;--text:#1c1c1a;--text2:#555552;--text3:#999994;--blue:#1a56db;--bluebg:#eff4ff;--green:#16a34a;--greenbg:#f0fdf4;--amber:#d97706;--amberbg:#fffbeb;--red:#dc2626;--redbg:#fef2f2;--mono:'IBM Plex Mono',monospace;--sans:'Lato',sans-serif;--nh:50px;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);background:var(--white);color:var(--text);font-size:14px;line-height:1.5;}
-.nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1.5px solid var(--border);height:var(--nh);display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
-.nav-brand{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;}
-.nav-brand span{color:var(--blue);}
-.ntabs{display:flex;gap:2px;}
-.ntab{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--text2);padding:5px 12px;border-radius:4px;cursor:pointer;border:none;background:transparent;transition:.15s;}
-.ntab:hover{background:var(--off);}
-.ntab.active{background:var(--bluebg);color:var(--blue);}
-.today-btn{font-family:var(--mono);font-size:11px;font-weight:600;background:var(--blue);color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;}
-.layout{display:grid;grid-template-columns:200px 1fr 260px;height:calc(100vh - var(--nh));}
-.sb{overflow-y:auto;background:var(--off);border-right:1.5px solid var(--border);}
-.sbr{overflow-y:auto;background:var(--white);border-left:1.5px solid var(--border);}
-.main{overflow-y:auto;}
-.sbs{padding:14px 12px 6px;}
-.sbl{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:0 6px;margin-bottom:6px;}
-.sbi{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:4px;font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:.12s;margin-bottom:1px;}
-.sbi:hover,.sbi.active{background:var(--white);color:var(--text);}
-.ico{font-size:13px;width:16px;text-align:center;flex-shrink:0;}
-.sdiv{height:1px;background:var(--borderl);margin:8px 12px;}
-.wki{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:4px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;transition:.12s;}
-.wki:hover{background:var(--white);color:var(--text2);}
-.wkb{font-family:var(--mono);font-size:9px;padding:1px 5px;border-radius:3px;background:var(--borderl);color:var(--text3);}
-.wkb.done{background:var(--greenbg);color:var(--green);}
-.view{display:none;}.view.active{display:block;}
-.ph{padding:24px 28px 16px;border-bottom:1px solid var(--borderl);}
-.ph-ey{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
-.ph-title{font-size:20px;font-weight:900;color:var(--text);margin-bottom:4px;letter-spacing:-.01em;}
-.ph-sub{font-size:13px;color:var(--text2);max-width:520px;line-height:1.5;}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px 28px;border-bottom:1px solid var(--borderl);}
-.stat{border:1.5px solid var(--border);border-radius:6px;padding:12px 14px;}
-.slbl{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
-.sval{font-size:22px;font-weight:900;color:var(--text);line-height:1;margin-bottom:3px;letter-spacing:-.02em;}
-.ssub{font-size:11px;color:var(--text3);}
-.pb{background:var(--borderl);border-radius:3px;height:4px;margin-top:7px;overflow:hidden;}
-.pbf{height:100%;border-radius:3px;transition:width .4s;}
-.pbf.b{background:var(--blue);}.pbf.g{background:var(--green);}
-.banner{margin:14px 28px;border:1.5px solid #fca5a5;border-left:4px solid var(--red);background:var(--redbg);border-radius:6px;padding:12px 16px;}
-.btitle{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;}
-.btext{font-size:12px;color:#7f1d1d;line-height:1.5;}
-.tagrow{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
-.etag{font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 7px;border-radius:3px;}
-.er{background:#fee2e2;color:var(--red);border:1px solid #fca5a5;}
-.eb{background:#dbeafe;color:#1e3a8a;border:1px solid #93c5fd;}
-.eg{background:var(--greenbg);color:#14532d;border:1px solid #86efac;}
-.ea{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
-.egr{background:var(--off);color:var(--text2);border:1px solid var(--border);}
-.sec-block{padding:18px 28px;}
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.sec-title{font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.01em;}
-.sec-meta{font-family:var(--mono);font-size:10px;color:var(--text3);}
-.esc{border:1.5px solid var(--border);border-radius:6px;padding:12px 14px;background:var(--white);margin-bottom:6px;}
-.escn{font-size:12px;font-weight:700;color:var(--text);}
-.escq{font-family:var(--mono);font-size:10px;color:var(--text3);}
-.escbar{background:var(--borderl);border-radius:2px;height:3px;margin:6px 0;}
-.escbf{height:100%;border-radius:2px;background:var(--blue);}
-.fbar{display:flex;gap:5px;padding:0 28px 14px;flex-wrap:wrap;align-items:center;}
-.fbtn{font-family:var(--mono);font-size:10px;font-weight:600;padding:4px 10px;border:1.5px solid var(--border);background:var(--white);color:var(--text2);border-radius:3px;cursor:pointer;transition:.12s;}
-.fbtn:hover{border-color:var(--blue);color:var(--blue);}
-.fbtn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
-.sbox{font-family:var(--sans);font-size:12px;font-weight:700;padding:4px 10px;border:1.5px solid var(--border);border-radius:3px;outline:none;color:var(--text);min-width:140px;transition:.15s;}
-.sbox:focus{border-color:var(--blue);}
-.dl{padding:0 28px 28px;}
-.wkg{margin-bottom:16px;}
-.wkh{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--off);border:1.5px solid var(--border);border-radius:5px 5px 0 0;cursor:pointer;user-select:none;}
-.wkh:hover{background:#f0f0ec;}
-.wkn{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text);}
-.wkf{font-size:11px;color:var(--text2);font-weight:700;}
-.wkp{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:auto;}
-.wkc{font-size:10px;color:var(--text3);transition:transform .2s;}
-.wkg.col .wkc{transform:rotate(-90deg);}
-.wkdays{border:1.5px solid var(--border);border-top:none;border-radius:0 0 5px 5px;overflow:hidden;}
-.wkg.col .wkdays{display:none;}
-.dc{border-bottom:1px solid var(--borderl);background:var(--white);transition:background .12s;}
-.dc:last-child{border-bottom:none;}
-.dc:hover{background:#fafaf8;}
-.dc[data-status="not-started"]{border-left:3px solid var(--border);}
-.dc[data-status="in-progress"]{border-left:3px solid var(--amber);}
-.dc[data-status="complete"]{border-left:3px solid var(--green);}
-.dch{display:grid;grid-template-columns:52px 1fr auto;align-items:center;padding:10px 14px;gap:10px;cursor:pointer;}
-.dnum{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--text3);text-align:center;}
-.dnum span{display:block;font-size:15px;font-weight:900;color:var(--text);line-height:1;}
-.dtitle{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;letter-spacing:-.01em;}
-.dmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.tt{font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 6px;border-radius:2px;letter-spacing:.02em;}
-.tl{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
-.tf{background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd;}
-.tt2{background:#fce7f3;color:#831843;border:1px solid #f9a8d4;}
-.tm{background:#dcfce7;color:#14532d;border:1px solid #86efac;}
-.tc{background:#dbeafe;color:#1e3a8a;border:1px solid #93c5fd;}
-.tr{background:var(--off);color:var(--text2);border:1px solid var(--border);}
-.te{background:var(--blue);color:#fff;border:1px solid var(--blue);}
-.tmx{background:#fdf4ff;color:#581c87;border:1px solid #e9d5ff;}
-.dtime{font-family:var(--mono);font-size:9px;color:var(--text3);}
-.dst{font-family:var(--mono);font-size:9px;font-weight:600;}
-.dst.c{color:var(--green);}.dst.ip{color:var(--amber);}
-.dchev{font-size:10px;color:var(--text3);transition:transform .2s;}
-.dc.exp .dchev{transform:rotate(90deg);}
-.dbody{display:none;padding:0 14px 14px 66px;border-top:1px solid var(--borderl);}
-.dc.exp .dbody{display:block;}
-.dgoal{font-size:12px;color:var(--text2);background:var(--off);border-left:3px solid var(--blue);padding:8px 12px;border-radius:0 4px 4px 0;margin:10px 0 12px;font-style:italic;line-height:1.5;}
-.dcols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;}
-.dcl{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
-.ck{list-style:none;}
-.ck li{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:var(--text2);padding:3px 0;line-height:1.4;}
-.ck li input{margin-top:2px;flex-shrink:0;accent-color:var(--blue);cursor:pointer;}
-.ck li.chk{text-decoration:line-through;color:var(--text3);}
-.rl{list-style:none;}
-.ri{display:flex;align-items:flex-start;gap:6px;font-size:11px;padding:4px 0;border-bottom:1px solid var(--borderl);color:var(--text2);}
-.ri:last-child{border-bottom:none;}
-.rt{font-family:var(--mono);font-size:8px;font-weight:600;padding:2px 4px;border-radius:2px;text-transform:uppercase;flex-shrink:0;margin-top:1px;}
-.ryt{background:#fee2e2;color:#991b1b;}
-.rweb{background:#dbeafe;color:#1e3a8a;}
-.rdrill{background:#ede9fe;color:#4c1d95;}
-.rprac{background:var(--greenbg);color:#14532d;}
-.rosha{background:#fce7f3;color:#831843;}
-.why{background:var(--bluebg);border:1px solid #bfdbfe;border-radius:4px;padding:9px 12px;font-size:11px;color:#1e40af;margin-top:10px;line-height:1.5;}
-.why strong{font-family:var(--mono);font-size:9px;letter-spacing:.06em;display:block;margin-bottom:3px;text-transform:uppercase;}
-.dacts{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap;}
-.btn{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 12px;border-radius:3px;cursor:pointer;letter-spacing:.03em;transition:.12s;border:1.5px solid transparent;}
-.bprim{background:var(--blue);color:#fff;border-color:var(--blue);}
-.bprim:hover{background:#1648c4;}
-.bsec{background:var(--white);color:var(--text2);border-color:var(--border);}
-.bsec:hover{border-color:var(--text2);}
-.bdone{background:var(--greenbg);color:var(--green);border-color:#86efac;}
-.bflag{background:var(--white);color:var(--red);border-color:#fca5a5;}
-.ni{width:100%;font-family:var(--sans);font-size:11px;border:1.5px solid var(--border);border-radius:3px;padding:7px 9px;color:var(--text);resize:vertical;min-height:52px;outline:none;margin-top:8px;transition:.15s;}
-.ni:focus{border-color:var(--blue);}
-.ni::placeholder{color:var(--text3);}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 28px;}
-.mc{border:1.5px solid var(--border);border-radius:6px;padding:16px;background:var(--white);}
-.mc.weak{border-left:4px solid var(--red);}
-.mc.strong{border-left:4px solid var(--green);}
-.mc.medium{border-left:4px solid var(--amber);}
-.mn{font-size:13px;font-weight:900;color:var(--text);letter-spacing:-.01em;margin-bottom:3px;}
-.mq{font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:7px;}
-.md{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:10px;}
-.stl{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
-.st{font-family:var(--mono);font-size:9px;padding:2px 6px;background:var(--off);border:1px solid var(--border);border-radius:2px;color:var(--text2);}
-.mmis{font-size:10px;color:var(--red);margin-bottom:6px;line-height:1.4;}
-.moff{font-family:var(--mono);font-size:9px;color:var(--text3);padding-top:8px;border-top:1px solid var(--borderl);}
-.hbu{border:2px dashed var(--border);border-radius:8px;padding:36px;text-align:center;background:var(--off);cursor:pointer;transition:.2s;margin-bottom:20px;}
-.hbu:hover{border-color:var(--blue);background:var(--bluebg);}
-.hbd{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
-.drc{border:1.5px solid var(--border);border-radius:5px;padding:12px;background:var(--white);cursor:pointer;transition:.15s;}
-.drc:hover:not(.lk){border-color:var(--blue);}
-.drc.lk{opacity:.5;cursor:not-allowed;}
-.drt{font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px;}
-.drd{font-size:10px;color:var(--text3);line-height:1.4;}
-.refsec{border-bottom:1px solid var(--borderl);}
-.refh{padding:9px 14px;background:var(--off);font-family:var(--mono);font-size:10px;font-weight:600;color:var(--text2);cursor:pointer;letter-spacing:.04em;}
-.refb{padding:10px 14px;display:none;}
-.refi{font-size:11px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--borderl);display:flex;gap:6px;}
-.refi:last-child{border-bottom:none;}
-.mkc{border:1.5px solid var(--border);border-radius:6px;padding:18px;margin-bottom:10px;background:var(--white);}
-.mkt{font-size:13px;font-weight:900;color:var(--text);letter-spacing:-.01em;margin-bottom:5px;}
-.mkd{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:10px;}
-.mks{display:flex;gap:14px;padding-top:10px;border-top:1px solid var(--borderl);}
-.mkst{font-family:var(--mono);font-size:10px;color:var(--text3);}
-.mkst b{color:var(--text);font-weight:600;}
-.wdg{border:1.5px solid var(--border);border-radius:5px;margin:12px;overflow:hidden;}
-.wdgh{padding:8px 12px;background:var(--off);border-bottom:1px solid var(--borderl);}
-.wdgt{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text2);letter-spacing:.07em;text-transform:uppercase;}
-.wdgb{padding:10px 12px;}
-.tn{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;}
-.ts{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:8px;}
-.ttk{font-size:11px;color:var(--text2);padding:3px 0;border-bottom:1px solid var(--borderl);display:flex;align-items:flex-start;gap:5px;}
-.ttk:last-child{border-bottom:none;}
-.strow{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--borderl);font-size:11px;}
-.strow:last-child{border-bottom:none;}
-.stlbl{color:var(--text2);font-weight:700;}
-.stb{font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 6px;border-radius:2px;}
-.stw{background:var(--redbg);color:var(--red);border:1px solid #fca5a5;}
-.sts{background:var(--greenbg);color:var(--green);border:1px solid #86efac;}
-.stm{background:var(--amberbg);color:var(--amber);border:1px solid #fde68a;}
-.hbw{border:1.5px dashed var(--border);border-radius:5px;padding:12px;background:var(--off);margin:12px;text-align:center;}
-.hbwt{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);margin-bottom:5px;letter-spacing:.05em;text-transform:uppercase;}
-.hbwx{font-size:10px;color:var(--text3);line-height:1.4;margin-bottom:8px;}
-.ubtn{width:100%;font-family:var(--mono);font-size:10px;font-weight:600;padding:6px;border:1.5px dashed var(--blue);background:var(--bluebg);color:var(--blue);border-radius:3px;cursor:pointer;}
-.ql{list-style:none;}
-.qli{font-size:10px;padding:4px 0;border-bottom:1px solid var(--borderl);}
-.qli:last-child{border-bottom:none;}
-.qli a{color:var(--blue);text-decoration:none;font-weight:700;}
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PE Civil Structural Study Map (April 2024 Specs)</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --ink: #1c2430;
+      --muted: #667085;
+      --line: #d0d5dd;
+      --blue: #175cd3;
+      --blue-soft: #eff4ff;
+      --green: #027a48;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 18px 40px; }
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.7rem; }
+    .sub { margin: 0; color: var(--muted); }
+    .pill {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 14px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .card h2 { margin: 0 0 6px; font-size: 1.08rem; }
+    .count { color: var(--blue); font-weight: 600; font-size: 0.9rem; }
+    ul { margin: 10px 0 0 18px; padding: 0; }
+    li { margin: 4px 0; }
+    .full { grid-column: 1 / -1; }
+    .q {
+      border-left: 4px solid var(--green);
+      background: #f6fef9;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    .q h3 { margin: 0 0 6px; font-size: 0.98rem; }
+    .q p { margin: 0; color: #344054; }
+    footer { margin-top: 18px; color: var(--muted); font-size: 0.88rem; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-brand">PE <span>CIVIL: STRUCTURAL</span> — 60-DAY BOOTCAMP</div>
-  <div class="ntabs">
-    <button class="ntab active" onclick="showView('dashboard')">Dashboard</button>
-    <button class="ntab" onclick="showView('schedule')">Schedule</button>
-    <button class="ntab" onclick="showView('modules')">Modules</button>
-    <button class="ntab" onclick="showView('handbook')">Handbook</button>
-    <button class="ntab" onclick="showView('mock')">Mock Exams</button>
+  <div class="wrap">
+    <section class="hero">
+      <h1>PE Civil: Structural — Topic Map + Practice Examples</h1>
+      <p class="sub">Updated to match the official <strong>April 2024 NCEES Civil–Structural CBT</strong> specification structure.</p>
+      <span class="pill">80 questions · 9 hours · SI + USCS</span>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>1) Analysis of Structures — Loads and Load Applications</h2>
+        <div class="count">12–18 questions</div>
+        <ul>
+          <li>Dead, live, construction, wind, seismic, moving, snow/rain/ice, and impact loads</li>
+          <li>Earth pressure + surcharge loads</li>
+          <li>Tributary areas and load paths (vertical/lateral)</li>
+          <li>Load combinations</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>2) Analysis of Structures — Forces and Load Effects</h2>
+        <div class="count">17–26 questions</div>
+        <ul>
+          <li>Shear and moment diagrams</li>
+          <li>Axial tension/compression, shear, flexure, and combined stresses</li>
+          <li>Deflection checks</li>
+          <li>Special topics: torsion, buckling, fatigue, bearing, thermal effects</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>3) Temporary Structures and Other Topics</h2>
+        <div class="count">5–8 questions</div>
+        <ul>
+          <li>Special inspections and submittals</li>
+          <li>Formwork, falsework, shoring/reshoring, scaffolding, bracing, anchorage</li>
+          <li>Impact of construction on adjacent facilities</li>
+          <li>Safety topics (construction/roadside/work zone)</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>4) Design &amp; Details — Materials and Material Properties</h2>
+        <div class="count">10–15 questions</div>
+        <ul>
+          <li>Soil classification and soil properties</li>
+          <li>Concrete, steel, timber, masonry behavior and use</li>
+          <li>Material test methods and specification conformance</li>
+        </ul>
+      </article>
+
+      <article class="card full">
+        <h2>5) Design &amp; Details — Component Design and Detailing</h2>
+        <div class="count">26–39 questions</div>
+        <ul>
+          <li>Horizontal members (beams, slabs, diaphragms, struts)</li>
+          <li>Vertical members (columns, bearing walls, shear walls)</li>
+          <li>Systems (trusses, braces, frames, composite)</li>
+          <li>Connections (bolted, welded, anchors, embedments)</li>
+          <li>Shallow and deep foundations + retaining walls</li>
+        </ul>
+      </article>
+
+      <article class="card full">
+        <h2>Practice Example Questions</h2>
+        <p class="sub">I included a starter set below so your page has direct practice aligned to each NCEES topic area.</p>
+
+        <div class="q">
+          <h3>Q1 — Load combinations (Sec. 1)</h3>
+          <p>A steel beam supports dead, live, and roof snow loads. Determine the controlling ASCE 7 LRFD load combination and factored demand.</p>
+        </div>
+
+        <div class="q">
+          <h3>Q2 — Seismic base shear path (Sec. 1 + 2)</h3>
+          <p>Given a 3-story shear wall building with diaphragm reactions, compute the story shear distribution and overturning moment at the base.</p>
+        </div>
+
+        <div class="q">
+          <h3>Q3 — Shear/moment + deflection (Sec. 2)</h3>
+          <p>For a simply supported beam with uniform and point loads, draw V-M diagrams and find maximum deflection using EI.</p>
+        </div>
+
+        <div class="q">
+          <h3>Q4 — Temporary bracing check (Sec. 3)</h3>
+          <p>A formwork panel is laterally braced during concrete placement. Check brace force and anchorage adequacy under construction loads.</p>
+        </div>
+
+        <div class="q">
+          <h3>Q5 — Material properties (Sec. 4)</h3>
+          <p>Given index properties and SPT data, classify soil and estimate bearing behavior impacts for footing serviceability checks.</p>
+        </div>
+
+        <div class="q">
+          <h3>Q6 — RC flexural design (Sec. 5)</h3>
+          <p>Design tension steel for a rectangular reinforced concrete beam section under factored moment per ACI 318 and verify strain limits.</p>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      Based on NCEES Civil–Structural CBT exam specifications effective April 2024. Add your own worked solutions under each question.
+    </footer>
   </div>
-  <button class="today-btn" onclick="goToToday()">→ TODAY</button>
-</nav>
-<div class="layout">
-  <aside class="sb">
-    <div class="sbs">
-      <div class="sbl">Views</div>
-      <div class="sbi active" onclick="showView('dashboard')"><span class="ico">▪</span>Dashboard</div>
-      <div class="sbi" onclick="showView('schedule')"><span class="ico">📋</span>Schedule</div>
-      <div class="sbi" onclick="showView('modules')"><span class="ico">📚</span>Modules</div>
-      <div class="sbi" onclick="showView('handbook')"><span class="ico">📖</span>Handbook</div>
-      <div class="sbi" onclick="showView('mock')"><span class="ico">📝</span>Mock Exams</div>
-    </div>
-    <div class="sdiv"></div>
-    <div class="sbs"><div class="sbl">Weeks</div><div id="weekNav"></div></div>
-    <div class="sdiv"></div>
-    <div class="sbs">
-      <div class="sbl">Exam Sections</div>
-      <div class="sbi" onclick="filterTopic('loads')"><span class="ico">🔴</span>1. Loads (12–18)</div>
-      <div class="sbi" onclick="filterTopic('forces')"><span class="ico">🟣</span>2. Forces (17–26)</div>
-      <div class="sbi" onclick="filterTopic('temp')"><span class="ico">🟡</span>3. Temp (5–8)</div>
-      <div class="sbi" onclick="filterTopic('materials')"><span class="ico">🟢</span>4. Materials (10–15)</div>
-      <div class="sbi" onclick="filterTopic('component')"><span class="ico">🔵</span>5. Component (26–39)</div>
-    </div>
-  </aside>
-  <main class="main" id="mainContent">
-    <div class="view active" id="view-dashboard">
-      <div class="ph">
-        <div class="ph-ey">NCEES PE CIVIL: STRUCTURAL · OFFICIAL APRIL 2024 SPECS · 80 QUESTIONS · 9 HRS</div>
-        <h1 class="ph-title">60-Day Bootcamp</h1>
-        <p class="ph-sub">Built to the official 5-section exam blueprint. Weak areas front-loaded and recurring. No soft days.</p>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="slbl">Day</div><div class="sval" id="sDay">1</div><div class="ssub">of 60</div><div class="pb"><div class="pbf b" id="dBar" style="width:0%"></div></div></div>
-        <div class="stat"><div class="slbl">Complete</div><div class="sval" id="sDone">0</div><div class="ssub">days done</div><div class="pb"><div class="pbf g" id="doBar" style="width:0%"></div></div></div>
-        <div class="stat"><div class="slbl">Week</div><div class="sval" id="sWeek">1</div><div class="ssub" id="sWFocus">Loads + Temp Structures</div></div>
-        <div class="stat"><div class="slbl">Exam</div><div class="sval" style="font-size:15px;margin-top:4px">80 Qs</div><div class="ssub">9 hrs · SI+USCS · CBT</div></div>
-      </div>
-      <div class="banner">
-        <div class="btitle">⚠ Priority Weak Areas — Front-Loaded Weeks 1–3, Recurring Every Week</div>
-        <div class="btext">These map to official exam sections with significant question counts. Do not skip or defer them.</div>
-        <div class="tagrow">
-          <span class="etag er">SEC 1: SEISMIC LOADS (ASCE 7)</span>
-          <span class="etag er">SEC 3: OSHA CFR 29 + FORMWORK</span>
-          <span class="etag er">SEC 4: SOIL PROPERTIES + MATERIALS</span>
-          <span class="etag er">SEC 5: FOUNDATIONS + RETAINING</span>
-          <span class="etag ea">SEC 5: WOOD NDS (ASD ONLY)</span>
-          <span class="etag ea">SEC 5: MASONRY TMS 402</span>
-        </div>
-      </div>
-      <div class="sec-block">
-        <div class="sec-hdr"><div class="sec-title">📌 Today</div><div class="sec-meta" id="todayDate"></div></div>
-        <div style="border:1.5px solid var(--border);border-radius:6px;padding:14px;">
-          <div class="tn" id="dToday">Day 1</div>
-          <div class="ts" id="dTodayM">Sec 1: Loads · 1.5 hrs</div>
-          <ul id="dTodayT" style="list-style:none;margin-top:8px;"></ul>
-          <div style="margin-top:10px;"><button class="btn bprim" onclick="goToToday()">Open Day Card →</button></div>
-        </div>
-      </div>
-      <div class="sec-block" style="padding-top:0">
-        <div class="sec-hdr"><div class="sec-title">📊 Official Exam Blueprint</div><div class="sec-meta">April 2024 · 80 Questions</div></div>
-        <div id="bp"></div>
-      </div>
-    </div>
-    <div class="view" id="view-schedule">
-      <div class="ph"><div class="ph-ey">60-DAY STUDY PLAN · OFFICIAL 5-SECTION BLUEPRINT</div><h1 class="ph-title">Full Schedule</h1><p class="ph-sub">6 study days + 1 review/test day. Weak areas weeks 1–3. Full simulations weeks 8–9.</p></div>
-      <div class="fbar">
-        <button class="fbtn active" onclick="setF('all',this)">All</button>
-        <button class="fbtn" onclick="setF('loads',this)">Sec 1</button>
-        <button class="fbtn" onclick="setF('forces',this)">Sec 2</button>
-        <button class="fbtn" onclick="setF('temp',this)">Sec 3</button>
-        <button class="fbtn" onclick="setF('materials',this)">Sec 4</button>
-        <button class="fbtn" onclick="setF('component',this)">Sec 5</button>
-        <button class="fbtn" onclick="setF('review',this)">Review</button>
-        <button class="fbtn" onclick="setF('exam',this)">Exam Sim</button>
-        <input class="sbox" type="text" placeholder="Search days…" oninput="searchDays(this.value)">
-      </div>
-      <div class="dl" id="dayList"></div>
-    </div>
-    <div class="view" id="view-modules">
-      <div class="ph"><div class="ph-ey">TOPIC MODULES · OFFICIAL EXAM SECTIONS</div><h1 class="ph-title">Study Modules</h1><p class="ph-sub">Red = weak area. Question counts from official specs. Study time should match question weight.</p></div>
-      <div class="mgrid" id="modulesGrid"></div>
-    </div>
-    <div class="view" id="view-handbook">
-      <div class="ph"><div class="ph-ey">REFERENCE TRAINING · PE CIVIL HANDBOOK + 9 DESIGN STANDARDS</div><h1 class="ph-title">Handbook & Standards Drills</h1><p class="ph-sub">Exam provides the PE Civil Reference Handbook + all listed standards as searchable PDFs, one chapter at a time. Train the navigation.</p></div>
-      <div style="padding:20px 28px;">
-        <div class="hbu" onclick="document.getElementById('hbf').click()">
-          <div style="font-size:28px;margin-bottom:8px">📖</div>
-          <div style="font-size:13px;font-weight:900;color:var(--text);margin-bottom:4px">Upload PE Civil Reference Handbook PDF</div>
-          <div style="font-size:11px;color:var(--text3);margin-bottom:12px">Get it from your MyNCEES account. Upload to activate timed lookup drills.</div>
-          <button class="btn bprim" style="pointer-events:none">Select File</button>
-          <input type="file" id="hbf" accept=".pdf" style="display:none" onchange="handleHb(this)">
-        </div>
-        <div style="background:var(--redbg);border:1px solid #fca5a5;border-radius:5px;padding:10px 12px;margin-bottom:16px;font-size:11px;color:#7f1d1d;line-height:1.5;">
-          <strong>Exam reality:</strong> Only ONE chapter can be open at a time. Ctrl+F does not work across the document. You must know which chapter contains ASCE 7 seismic Fa values vs which has load combinations. Candidates who don't know the structure of the reference panel waste 4+ minutes per lookup. Train this now.
-        </div>
-        <div class="sec-hdr"><div class="sec-title">Timed Lookup Drills</div><div class="sec-meta">Unlock after upload · Target &lt;30 sec each</div></div>
-        <div class="hbd" id="hbDrills"></div>
-        <div class="sec-hdr" style="margin-top:24px"><div class="sec-title">Reference Map — All 9 Exam Standards</div></div>
-        <div style="border:1.5px solid var(--border);border-radius:6px;overflow:hidden;" id="refMap"></div>
-      </div>
-    </div>
-    <div class="view" id="view-mock">
-      <div class="ph"><div class="ph-ey">MOCK EXAMS & TIMED DRILLS</div><h1 class="ph-title">Practice Sets</h1><p class="ph-sub">From Week 3 onward, timed sets become your primary practice. Complete every simulation before exam day.</p></div>
-      <div style="padding:0 28px 28px;" id="mockSection"></div>
-    </div>
-  </main>
-  <aside class="sbr">
-    <div class="wdg"><div class="wdgh"><div class="wdgt">📌 Today</div></div><div class="wdgb"><div class="tn" id="sbTN">Day 1</div><div class="ts" id="sbTS">Sec 1 · 1.5 hrs</div><button class="btn bprim" style="width:100%;margin-top:6px" onclick="goToToday()">Go to Today →</button></div></div>
-    <div class="wdg"><div class="wdgh"><div class="wdgt">Topic Strength</div></div><div class="wdgb" id="strWdg"></div></div>
-    <div class="hbw"><div class="hbwt">📖 Handbook</div><div class="hbwx">Upload PE Civil Reference Handbook from MyNCEES to unlock timed lookup drills.</div><button class="ubtn" onclick="showView('handbook')">+ Upload Handbook</button></div>
-    <div class="wdg"><div class="wdgh"><div class="wdgt">⚡ Key Links</div></div><div class="wdgb"><ul class="ql">
-      <li class="qli"><a href="https://www.youtube.com/results?search_query=ASCE+7+seismic+PE+exam" target="_blank">▶ ASCE 7 Seismic</a></li>
-      <li class="qli"><a href="https://www.youtube.com/results?search_query=OSHA+1926+construction+safety+PE+exam" target="_blank">▶ OSHA CFR 29</a></li>
-      <li class="qli"><a href="https://www.youtube.com/results?search_query=bearing+capacity+foundations+PE+civil" target="_blank">▶ Foundations</a></li>
-      <li class="qli"><a href="https://www.youtube.com/results?search_query=NDS+wood+design+ASD+PE+exam" target="_blank">▶ NDS Wood ASD</a></li>
-      <li class="qli"><a href="https://www.youtube.com/results?search_query=TMS+402+masonry+PE+civil" target="_blank">▶ TMS 402 Masonry</a></li>
-      <li class="qli"><a href="https://open-exam-prep.com/practice/pe-structural" target="_blank">▶ Free Practice Qs</a></li>
-      <li class="qli"><a href="https://ncees.org/exams/pe-exam/civil/" target="_blank">▶ NCEES Official</a></li>
-    </ul></div></div>
-  </aside>
-</div>
-<script>
+</body>
+</html>
